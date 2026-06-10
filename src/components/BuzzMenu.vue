@@ -136,7 +136,7 @@ export default {
       social: [
         { icon: 'mdi-facebook', link: 'https://www.facebook.com/HappyLinkNetUa' },
         { icon: 'mdi-account-multiple-outline', link: 'https://my.happylink.net.ua' },
-        { icon: 'mdi-wechat', link: 'https://t.me/HappyLinkNetUa' },
+        { icon: 'mdi-send', link: 'https://t.me/HappyLinkNetUa' },
       ],
     };
   },

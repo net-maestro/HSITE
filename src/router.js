@@ -17,6 +17,7 @@ const routes = [
   { path: "/service/test", name: "Послуги", component: () => import("@/views/services/TestService.vue") },
   { path: "/coverage-map", name: "Карта покриття", component: () => import("@/views/ProviderCoverageMap.vue") },
   { path: "/promotions", name: "Акції", component: () => import("@/views/Promotions.vue") },
+  { path: "/business", name: "Для бізнесу", component: () => import("@/views/prices/BusinessPrice.vue") },
   {
   path: '/promo/:id',
   name: 'PromoDetail',

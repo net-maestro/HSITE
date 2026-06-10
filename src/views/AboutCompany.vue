@@ -101,7 +101,7 @@ export default {
     localizedAdvantages() {
       if (this.isUa) {
         return [
-          { icon: 'mdi-rocket-launch', color: '#ff6b6b', title: 'Висока швидкість', text: 'Найбільша швидкість доступу – до 1000 Мбіт/сек' },
+          { icon: 'mdi-rocket-launch', color: '#ff6b6b', title: 'Висока швидкість', text: 'Найбільша швидкість доступу – до 2500 Мбіт/сек' },
           { icon: 'mdi-shield-check', color: '#4ecdc4', title: 'Надійність', text: 'Стабільність і надійність зв’язку за будь-яких умов' },
           { icon: 'mdi-clock-fast', color: '#feca57', title: 'Швидка реакція', text: 'Миттєве реагування на звернення, активна розбудова мережі PON' },
           { icon: 'mdi-tools', color: '#ff9f43', title: 'Безкоштовний майстер', text: 'Безкоштовний виклик майстра для підключення' },
@@ -109,7 +109,7 @@ export default {
         ]
       }
       return [
-        { icon: 'mdi-rocket-launch', color: '#ff6b6b', title: 'High Speed', text: 'The highest access speed - up to 1000 Mbps' },
+        { icon: 'mdi-rocket-launch', color: '#ff6b6b', title: 'High Speed', text: 'The highest access speed - up to 2500 Mbps' },
         { icon: 'mdi-shield-check', color: '#4ecdc4', title: 'Reliability', text: 'Stability and reliability of the connection in any conditions' },
         { icon: 'mdi-clock-fast', color: '#feca57', title: 'Quick Response', text: 'Instant response to requests, active PON network expansion' },
         { icon: 'mdi-tools', color: '#ff9f43', title: 'Free Technician', text: 'Free technician visits for connection setup' },

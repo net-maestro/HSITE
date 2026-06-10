@@ -85,7 +85,7 @@
           block
           color="secondary"
           size="x-large"
-          class="font-weight-bold"
+          class="font-weight-bold mb-15"
           rounded="lg"
           @click="checkout"
         >
@@ -120,6 +120,9 @@ const checkout = () => {
 </script>
 
 <style scoped>
+.cart-drawer {
+  z-index: 1050 !important;
+}
 .cart-item-card {
   border: 1px solid #f0f0f0;
   border-radius: 12px;

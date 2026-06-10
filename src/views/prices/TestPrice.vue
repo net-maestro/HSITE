@@ -5,28 +5,25 @@
         {{ $t("menu.internet") }}
       </h2>
 
-      <!-- Переключатель типов (обновлённый) -->
-      <v-row justify="center" class="mb-4">
-        <v-col cols="12" class="text-center">
-          <v-btn-toggle
-            v-model="activeType"
-            mandatory
-            variant="outlined"
-            rounded="pill"
-            color="amber"
-            class="category-toggle"
-          >
-            <v-btn
+      <!-- Переключатель типов (Custom iOS Style) -->
+      <v-row justify="center" class="mb-8 mt-2">
+        <v-col cols="12" class="d-flex justify-center">
+          <div class="custom-switcher">
+            <div 
+              class="switcher-indicator" 
+              :class="'active-' + activeType"
+            ></div>
+            <button
               v-for="(type, key) in switchTypes"
               :key="key"
-              :value="key"
-              size="small"
-              class="text-none px-4"
+              class="switcher-btn"
+              :class="{ 'active': activeType === key }"
+              @click="activeType = key"
             >
-              <span v-if="type.icon" class="mr-1">{{ type.icon }}</span>
+              <span v-if="type.icon" class="mr-2">{{ type.icon }}</span>
               {{ type.label }}
-            </v-btn>
-          </v-btn-toggle>
+            </button>
+          </div>
         </v-col>
       </v-row>
 
@@ -507,26 +504,67 @@ export default {
 
 
 
-/* Стили для переключателя тарифов (в стиле category-toggle) */
-.category-toggle {
+/* Custom Switcher */
+.custom-switcher {
+  position: relative;
   display: inline-flex;
-  border: 1px solid #e0e0e0;
+  background: #f1f5f9; /* slate-100 */
+  border-radius: 40px;
+  padding: 6px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.category-toggle :deep(.v-btn) {
-  border-color: transparent !important;
-  color: #2c3e50 !important;
-  font-weight: 500;
+.switcher-btn {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748b; /* slate-500 */
+  border-radius: 34px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.category-toggle :deep(.v-btn.v-btn--active) {
-  border-color: #feb700 !important;
-  background: linear-gradient(135deg, #fed100, #feb700) !important;
-  color: #000 !important;
+@media (max-width: 600px) {
+  .switcher-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    min-width: 140px;
+  }
 }
 
-.category-toggle :deep(.v-btn:focus-visible) {
-  outline: none !important;
+.switcher-btn.active {
+  color: #1e293b; /* slate-800 */
+  font-weight: 700;
+}
+
+.switcher-indicator {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  bottom: 6px;
+  width: calc(50% - 6px);
+  background: linear-gradient(135deg, #fed100, #ffb300);
+  border-radius: 34px;
+  box-shadow: 0 4px 16px rgba(254, 209, 0, 0.4), inset 0 -2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy effect */
+  z-index: 0;
+}
+
+.switcher-indicator.active-multi {
+  transform: translateX(0);
+}
+.switcher-indicator.active-private {
+  transform: translateX(100%);
 }
 
 .tariff-slide {

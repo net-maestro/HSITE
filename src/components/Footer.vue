@@ -152,26 +152,52 @@
       </div>
     </div>
 
-    <!-- Мобильный футер -->
-    <div v-else class="mobile-footer">
-      <div class="mobile-nav-container">
-        <a href="https://my.happylink.net.ua" target="_blank" style="text-decoration: none;">
-          <div class="mobile-nav-item">
-            <v-icon size="24" color="#2c3e50">mdi-account-circle</v-icon>
-            <span class="mobile-nav-label">{{ $t("menu.cabinet") }}</span>
+    <!-- Мобильный футер (Floating Capsule) -->
+    <div v-else class="mobile-footer-wrapper">
+      <div class="mobile-footer">
+        <div class="mobile-nav-container">
+          <!-- Cabinet -->
+          <a href="https://my.happylink.net.ua" target="_blank" class="mobile-nav-link">
+            <div class="mobile-nav-item">
+              <div class="icon-wrapper">
+                <v-icon size="24" color="#64748b">mdi-account-circle</v-icon>
+              </div>
+              <span class="mobile-nav-label">{{ $t("menu.cabinet") }}</span>
+            </div>
+          </a>
+          <!-- Internet -->
+          <div 
+            class="mobile-nav-item" 
+            :class="{ 'active': $route.path.includes('/price') }"
+            @click="$router.push('/price/internet-price')"
+          >
+            <div class="icon-wrapper">
+              <v-icon size="24" :color="$route.path.includes('/price') ? '#1e293b' : '#64748b'">mdi-speedometer</v-icon>
+            </div>
+            <span class="mobile-nav-label">{{ $t("menu.internet") }}</span>
           </div>
-        </a>
-        <div class="mobile-nav-item" @click="$router.push('/price/internet-price')">
-          <v-icon size="24" color="#2c3e50">mdi-speedometer</v-icon>
-          <span class="mobile-nav-label">{{ $t("menu.internet") }}</span>
-        </div>
-        <div class="mobile-nav-item" @click="$router.push('/promotions')">
-          <v-icon size="24" color="#2c3e50">mdi-bullhorn-outline</v-icon>
-          <span class="mobile-nav-label">{{ $t('menu.promo') }}</span>
-        </div>
-        <div class="mobile-nav-item" @click="$router.push('/payment-methods')">
-          <v-icon size="24" color="#2c3e50">mdi-credit-card</v-icon>
-          <span class="mobile-nav-label">{{ $t('menu.payment') }}</span>
+          <!-- Promotions -->
+          <div 
+            class="mobile-nav-item" 
+            :class="{ 'active': $route.path === '/promotions' }"
+            @click="$router.push('/promotions')"
+          >
+            <div class="icon-wrapper">
+              <v-icon size="24" :color="$route.path === '/promotions' ? '#1e293b' : '#64748b'">mdi-bullhorn-outline</v-icon>
+            </div>
+            <span class="mobile-nav-label">{{ $t('menu.promo') }}</span>
+          </div>
+          <!-- Payment -->
+          <div 
+            class="mobile-nav-item" 
+            :class="{ 'active': $route.path === '/payment-methods' }"
+            @click="$router.push('/payment-methods')"
+          >
+            <div class="icon-wrapper">
+              <v-icon size="24" :color="$route.path === '/payment-methods' ? '#1e293b' : '#64748b'">mdi-credit-card</v-icon>
+            </div>
+            <span class="mobile-nav-label">{{ $t('menu.payment') }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -207,7 +233,7 @@ export default {
     social: [
       { icon: 'mdi-facebook', link: 'https://www.facebook.com/HappyLinkNetUa' },
       { icon: 'mdi-account-multiple-outline', link: 'https://my.happylink.net.ua' },
-      { icon: 'mdi-wechat', link: 'https://www.t.me/HappyLinkNetUa' },
+      { icon: 'mdi-send', link: 'https://t.me/HappyLinkNetUa' },
     ],
   }),
   computed: {
@@ -329,54 +355,97 @@ export default {
   }
 }
 
-/* Мобильный футер */
-.mobile-footer {
+/* Мобильный футер - Floating Capsule Design */
+.mobile-footer-wrapper {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(254, 209, 0, 0.3);
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: center;
+  pointer-events: none; 
+}
+
+.mobile-footer {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0,0,0,0.06);
+  border-radius: 28px;
+  padding: 4px 8px;
+  margin-bottom: env(safe-area-inset-bottom);
+  transition: all 0.3s ease;
 }
 
 .mobile-nav-container {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 0 16px;
+  width: 100%;
+}
+
+.mobile-nav-link {
+  text-decoration: none;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-nav-item {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
   cursor: pointer;
-  padding: 8px 4px;
-  border-radius: 12px;
-  transition: all 0.2s ease;
+  padding: 6px 0;
+  border-radius: 16px;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.mobile-nav-item:hover {
-  background: rgba(254, 209, 0, 0.1);
+.mobile-nav-item:active {
+  transform: scale(0.92);
+}
+
+.icon-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 52px;
+  height: 32px;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-item.active .icon-wrapper {
+  background: rgba(254, 209, 0, 0.3); /* Brand yellow transparent */
 }
 
 .mobile-nav-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #64748b; /* slate-500 */
   margin-top: 4px;
-  transition: color 0.2s ease;
+  transition: all 0.3s ease;
+  text-align: center;
 }
 
-.mobile-nav-item:hover .mobile-nav-label {
-  color: #b38800;
+.mobile-nav-item.active .mobile-nav-label {
+  color: #1e293b; /* slate-800 */
+  font-weight: 700;
+}
+
+/* Cabinet styling specifically on hover if needed */
+.mobile-nav-link .mobile-nav-item:hover .icon-wrapper {
+  background: rgba(100, 116, 139, 0.1);
 }
 </style>

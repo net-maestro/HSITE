@@ -184,10 +184,7 @@
       <v-container class="py-6 d-flex flex-column justify-space-between fill-height">
         <div class="flex-grow-1 w-100 mt-2">
           
-          <!-- Логотип в меню -->
-          <div class="text-center mb-6">
-            <v-img src="@/assets/logo/happylinkLogo.svg" max-width="120" class="mx-auto" />
-          </div>
+
 
           <!-- Сворачиваемые категории -->
           <v-expansion-panels v-model="openPanels" multiple elevation="0" class="mobile-panels">
@@ -234,10 +231,7 @@
             </v-list-item>
           </v-list>
           
-          <!-- Language Mobile -->
-          <div class="mt-4 px-4 d-flex justify-center">
-            <SwitchLocale />
-          </div>
+
 
         </div>
 
@@ -270,6 +264,7 @@ const openPanels = ref([0])
 // Группировка для десктопа
 const servicesGroup = [
   { text: "menu.internet", route: "/price/internet-price", icon: "mdi-microsoft-internet-explorer" },
+  { text: "Для бізнесу", route: "/business", icon: "mdi-briefcase-outline" },
   { text: "menu.tv-list", route: "/price/tv-list", icon: "mdi-youtube-tv" },
   { text: "menu.intercom", route: "/price/intercom-price", icon: "mdi-doorbell-video" },
   { text: "menu.service", route: "/service/test", icon: "mdi-account-wrench-outline" },
@@ -295,6 +290,7 @@ const categories = {
     icon: "mdi-tag-multiple-outline",
     children: [
       { text: "menu.internet", route: "/price/internet-price", icon: "mdi-microsoft-internet-explorer" },
+      { text: "Для бізнесу", route: "/business", icon: "mdi-briefcase-outline" },
       { text: "menu.tv-list", route: "/price/tv-list", icon: "mdi-youtube-tv" },
       { text: "menu.intercom", route: "/price/intercom-price", icon: "mdi-doorbell-video" },
     ],
