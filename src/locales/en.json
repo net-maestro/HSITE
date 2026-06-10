@@ -1,0 +1,129 @@
+{
+  "menu": {
+    "rates": "Rates",
+    "cabinet": "Account",
+    "leave-request": "leave a request",
+    "recommendet-equipment": "Recommendet equipment",
+    "work-schedule": "Work schedule",
+    "monday-sat": "Monday - Sat",
+    "internet": "Internet",
+    "intercom": "Intercom",
+    "service": "Service",
+    "coverage-map": "Coverage map",
+    "promo": "Promo",
+    "loyalty-program":"Loyalty program",
+    "news": "News",
+    "device": "Device",
+    "payment": "Payment",
+    "business": "Business",
+    "docs": "Docs",
+    "about-company": "About company",
+    "contact": "Contact",
+    "other": "Other",
+    "tv-list": "IPTV",
+    "sitemap": "Sitemap",
+    "for-subscriber":"For Subscribers",
+    "about":"About Happylink"
+  },
+   "loyalty":{"title":"Loyalty program for HappyLink subscribers"},
+"documents": {
+  "view": "View",
+  "download": "Download",
+  "loading": "Loading PDF",
+  "all": "All",
+  "contracts": "Contracts",
+  "reports": "Reports",
+  "noDocuments": "No documents found for the selected category"
+},
+  "payments": {
+    "qr_title":"Payment by QR code",
+    "app":"Apps"
+  },
+  "request-form": {
+    "leave-a-request": "Leave a request",
+    "our-manager": "Our manager will contact you as soon as possible",
+    "phone-number": "phone number",
+    "name": "name",
+    "comment": "comment",
+    "send": "Send"
+  },
+  "promo": {
+    "active": "Active",
+    "inactive": "Expired",
+    "join-the-promotion": "join the promotion",
+    "inactive-promotions": "Inactive promotions",
+    "details":"details",
+    "back-to-list": "back-to-list",
+    "show-archived": "show-archived",
+    "no-slider-promotions":"no-slider-promotions"
+  },
+  "prices": {
+    "connection-type": "Connection type",
+    "for-apartments": "For apartments",
+    "private-sector": "Private sector",
+    "month": "month",
+    "Mbps": "Mbps",
+    "up-to": "Up to",
+    "external-ip": "+ External IP",
+    "to-buy": "to buy",
+    "rates": "Rates",
+    "total": "Total",
+    "ethernet-text": "Ethernet is a local network (LAN) technology for connecting devices to the network. Transfer speed from 10 Mbit/s to 100 Gbit/s and more.",
+    "pon-text": "PON (Passive Optical Network) is an optical interconnection technology that connects passive components without the need for electrical power to distribute the optical signal. Transfer speed from 10 Mbit/s to 10 Gbit/s.",
+    "snackbar-text": "<h2>External IP address</h2> \n <p>(or public IP address) is your device's unique identifier \n on the Internet, provided by your ISP.</p>\n  <h4>Key features:</h4>\\n <ul>\n <li><strong>Uniqueness</strong>: Each external IP address is unique.</li>\n <li><strong>Accessibility</strong>: It allows other devices on the Internet to find your device.</li>\n <li><strong>Types</strong>: Static (constant) or dynamic (changing over time).</li>\n </ul>"
+  },
+  "intercom": {
+    "service": "Service",
+    "price": "Price",
+    "subscription": "payment",
+    "intercom-key":"intercom key",
+    "order-key": "order key 120 ₴",
+    "number-of-keys": "number of keys",
+    "cost-of-key": "The cost of the key (₴)",
+    "intercom": "Intercom",
+    "video-intercom": "Video Intercom",
+    "intercom-service": "The intercom service is paid according to a public contract",
+    "cost-of-connection": "The cost of connection depends on the system installed in the entrance of the house and does not include the cost of the equipment installed in the apartment",
+    "connecting-intercom-to-system": "Connections to the system:",
+    "connection-cost": "connection cost",
+    "installation": "installation",
+    "setup":"setup",
+    "instruction":"instruction"
+  },
+  "footer": {
+    "docs": "Docs",
+    "public-contract": "Public contract",
+    "public-contract-intercom": "Intercom contract",
+    "we-work-with": "We work with",
+    "all-rights-reserved": "All rights reserved",
+    "internet-service-provider": "Internet Service Provider"
+  },
+  "contact":{
+    "contact-info": "Contact",
+    "location": "Location"
+  },
+  "preloader": {
+    "enter-site": "Enter to site"
+  },
+   "equipment":{
+    "order":"To Buy",
+    "show": "Show",
+    "sort": "Sort By"
+  },
+  "errors":{
+"page-not-found": "Page not found",
+"page-not-found-description": "Page does not exist or has been deleted",
+"back-to-home": "Back to home"
+},
+"surveillance": {
+    "bannerTitle": "Security Under Control!",
+    "bannerSubtitle": "We install video surveillance for homes, offices, or businesses. See everything happening — even from afar.",
+    "ctaButton": "Book Free Consultation",
+    "reasonsTitle": "5 Reasons to Install Video Surveillance",
+    "consultationTitle": "Book a Free Specialist Consultation",
+    "priceInfo": "Price depends on number of cameras, camera type (Analog or IP), installation location (outdoor or indoor), mounting height, cable length, required DVR settings, number and types of power supplies.",
+    "projectInfo": "Yes, our specialists can create a custom surveillance project for your premises.",
+    "remoteViewInfo": "Remote viewing setup via phone starts from *** UAH.",
+    "contacts": "Contacts"
+  }
+}

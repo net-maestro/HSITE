@@ -1,0 +1,109 @@
+menu:
+  rates: "Rates"
+  cabinet: "Account"
+  leave-request: "leave a request"
+  recommendet-equipment: "Recommendet equipment"
+  work-schedule: "Work schedule"
+  monday-sat: "Monday - Sat"
+  internet: "Internet"
+  intercom: "Intercom"
+  service: "Service"
+  coverage-map: "Coverage map"
+  promo: "Promo"
+  news: "News"
+  device: "Device"
+  payment: "Payment"
+  business: "Business"
+  docs: "Docs"
+  about-company: "About company"
+  contact: "Contact"
+  other: "Other"
+
+prices:
+  month: "month"
+  Mbps: "Mbps"
+  up-to: "Up to"
+  external-ip: "External IP"
+  to-buy: "to buy"
+  rates: "Rates"
+  total: "Total"
+  ethernet-text: >
+    Ethernet is a local area network (LAN) technology used to connect computers and other devices to a network. The main characteristics of Ethernet include the use of cables for data transmission, the CSMA/CD access method, data transfer rates from 10 Mbit/s to 100 Gbit/s and more.
+  pon-text: >
+    PON (Passive Optical Network) is a passive optical network technology used to provide a high-speed Internet connection. A PON uses passive components to distribute an optical signal from a single source to multiple subscribers. PON provides a high data transfer rate of up to 10 Gbit/s.
+  snackbar-text: >
+    <h2>External IP address</h2>
+    <p>(or public IP address) is your device's unique identifier on the Internet, provided by your ISP.</p>
+    <h4>Key features:</h4>
+    <ul>
+      <li><strong>Uniqueness</strong>: Each external IP address is unique.</li>
+      <li><strong>Accessibility</strong>: It allows other devices on the Internet to find your device.</li>
+      <li><strong>Types</strong>: Static (constant) or dynamic (changing over time).</li>
+    </ul>
+
+request-form:
+  leave-a-request: "Leave a request"
+  phone-number: "phone number"
+  name: "name"
+  comment: "comment"
+  send: "Send"
+
+intercom:
+  price: "Price"
+  subscription: "Subscription fee (₴) for 30 days"
+  cost-of-key: "The cost of the key (₴)"
+  intercom: "Intercom"
+  video-intercom: "Video Intercom"
+  intercom-service: "The intercom service is paid according to a public contract"
+  cost-of-connection: >
+    The cost of connection depends on the system installed in the entrance of the house and does not include the cost of the equipment installed in the apartment
+  audio-intercom-to-vizit: "Connecting an audio intercom to the Vizit system"
+  video-intercom-to-vizit: "Connecting an video intercom to the Vizit system"
+  video-intercom-to-neolight: "Connecting an video intercom to the neolight system"
+
+about:
+  text: >
+    <p>
+      Company <strong class="text-uppercase gray--text">
+      <span class="font-weight-light" style="color: #7A7A7A;"> Happy</span>
+      <span style="color: #FED100;">link</span>
+      </strong> provides access to the Internet using FTTB (Fiber to the Building) technology.
+      This system is based on the use of an optical fiber, through which the signal spreads almost without loss and has no external influence.
+      An optical fiber is laid to an apartment building, where the signal is distributed to each subscriber through a terminal, reaching the apartment already through an ordinary cable.
+    </p>
+    <p>Its advantages compared to other possible structures are:</p>
+    <ul>
+      <li>no need to purchase a modem or any other equipment;</li>
+      <li>the highest access speed is up to 1000 Mbit/s;</li>
+      <li>stability and reliability of communication;</li>
+      <li>high water resistance (the optical fiber line is not afraid of lightning and radio radiation, it is not affected by electromagnetic interference from the power cable);</li>
+      <li>a long service life of the line (optical fiber is protected from the influence of an aggressive environment and does not oxidize from moisture);</li>
+      <li>a separate optical cable from the network core is laid to each terminal (subscriber switch) in the house.</li>
+    </ul>
+    <p>
+      Our network is built according to the "star" topology and ensures no reduction in connection speed with any number of subscribers, as well as high reliability.
+    </p>
+    <style scoped>
+      p {margin-bottom: 16px; font-size: 16px;}
+      ul {margin-bottom: 16px; padding-left: 20px;}
+    </style>
+
+footer:
+  docs: "Docs"
+  public-contract: "Public contract"
+  we-work-with: "We work with"
+  all-rights-reserved: "All rights reserved"
+  internet-service-provider: "Internet Service Provider"
+  text: >
+    <h3 class="connect_head">Internet Provider HappyLink</h3>
+    <p class="connect_head">
+      We invite you to choose a reliable internet provider - HappyLink.
+      Our network covers (residential complexes "Happy", "Vishneva Oselya", "Barcelona", and others), providing stable connection and clear TV broadcasts.
+      We guarantee high-quality signal and reliable service for all our subscribers.
+      Order internet and digital TV connection with HappyLink - we fulfill our commitments to you without exaggeration.
+      Join our network today and experience the reliability and quality of service!
+    </p>
+    <style scoped>
+      ul {list-style-type: none; padding: 0;}
+      ul li {margin-bottom: 8px;}
+    </style>

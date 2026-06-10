@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /*?p=
+Disallow: /private/
+Disallow: /error/
+Disallow: /api/
+Allow: /
+
+Sitemap: https://happylink.net.ua/sitemap.xml
+Host: happylink.net.ua
