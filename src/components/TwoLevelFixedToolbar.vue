@@ -264,7 +264,7 @@ const openPanels = ref([0])
 // Группировка для десктопа
 const servicesGroup = [
   { text: "menu.internet", route: "/price/internet-price", icon: "mdi-microsoft-internet-explorer" },
-  { text: "Для бізнесу", route: "/business", icon: "mdi-briefcase-outline" },
+  { text: "menu.business", route: "/business", icon: "mdi-briefcase-outline" },
   { text: "menu.tv-list", route: "/price/tv-list", icon: "mdi-youtube-tv" },
   { text: "menu.intercom", route: "/price/intercom-price", icon: "mdi-doorbell-video" },
   { text: "menu.service", route: "/service/test", icon: "mdi-account-wrench-outline" },
@@ -290,7 +290,7 @@ const categories = {
     icon: "mdi-tag-multiple-outline",
     children: [
       { text: "menu.internet", route: "/price/internet-price", icon: "mdi-microsoft-internet-explorer" },
-      { text: "Для бізнесу", route: "/business", icon: "mdi-briefcase-outline" },
+      { text: "menu.business", route: "/business", icon: "mdi-briefcase-outline" },
       { text: "menu.tv-list", route: "/price/tv-list", icon: "mdi-youtube-tv" },
       { text: "menu.intercom", route: "/price/intercom-price", icon: "mdi-doorbell-video" },
     ],

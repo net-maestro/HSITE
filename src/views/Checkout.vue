@@ -32,16 +32,7 @@
                   ></v-text-field>
                 </v-col>
                 
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="formData.email"
-                    label="Email (необов'язково)"
-                    variant="outlined"
-                    density="comfortable"
-                    prepend-inner-icon="mdi-email"
-                  ></v-text-field>
-                </v-col>
-                
+
                 <v-col cols="12">
                   <v-text-field
                     v-model="formData.address"
@@ -152,7 +143,6 @@ const showSuccess = ref(false)
 const formData = ref({
   name: '',
   phone: '',
-  email: '',
   address: '',
   comment: ''
 })
@@ -169,24 +159,40 @@ const submitOrder = async () => {
   
   isSubmitting.value = true
   
-  // Create JSON payload
-  const payload = {
-    customer: { ...formData.value },
-    cart: {
-      items: cartStore.items,
-      totalItems: cartStore.totalItems,
-      totalPrice: cartStore.totalPrice
-    },
-    createdAt: new Date().toISOString()
+  const apiUrl = import.meta.env.VITE_API_LINK;
+  if (!apiUrl) {
+    console.error("Помилка: API лінк не знайдено в конфігурації!");
+    isSubmitting.value = false;
+    return;
   }
   
-  console.log('--- ORDER PAYLOAD ---', JSON.stringify(payload, null, 2))
-  
-  // Імітація запиту на сервер (тут має бути ваш POST запит)
-  setTimeout(() => {
+  // Формуємо деталі кошика для коментаря
+  const cartDetails = cartStore.items.map(item => `- ${item.name} (${item.quantity} шт.) - ${item.price * item.quantity} ₴`).join('\n');
+  const fullComment = `Адреса: ${formData.value.address}\n\nКошик:\n${cartDetails}\n\nСума до сплати: ${cartStore.totalPrice} ₴\n\nКоментар клієнта:\n${formData.value.comment || '-'}`;
+
+  try {
+    const apiPayload = {
+      name: formData.value.name,
+      phone: formData.value.phone,
+      reason: "Замовлення обладнання (з кошика)",
+      comment: fullComment
+    };
+
+    const apiResponse = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(apiPayload),
+    });
+
+    if (!apiResponse.ok) throw new Error(`Помилка: ${apiResponse.statusText}`);
+    
     isSubmitting.value = false
     showSuccess.value = true
-  }, 1000)
+  } catch (err) {
+    console.error("Помилка відправки:", err);
+    isSubmitting.value = false;
+    alert("Сталася помилка при відправці замовлення. Спробуйте пізніше або зателефонуйте нам.");
+  }
 }
 
 const finishCheckout = () => {
