@@ -1,26 +1,55 @@
-<!-- CoverageMap.vue -->
 <template>
-  <div class="map-section">
-    <h2 class="section-title">
-      {{ $t('menu.coverage-map') }}
-    </h2>
-
+  <div class="map-section bg-grey-lighten-4 py-12">
     <v-container>
+      <!-- Заголовок сторінки -->
+      <div class="text-center mb-12">
+        <h2 class="hl-section-title">
+          {{ $t('menu.coverage-map') }}
+        </h2>
+        <p class="text-body-1 text-grey-darken-1 mt-4">Перевірте можливість підключення за вашою адресою</p>
+      </div>
+
+      <!-- Інфо-картки статистики мережі -->
+      <v-row class="mb-10" justify="center">
+        <v-col cols="12" sm="4" md="4" v-for="(stat, i) in networkStats" :key="i">
+          <v-card class="hl-card text-center pa-6 h-100 d-flex flex-column justify-center" rounded="xl" elevation="0" :data-aos="animated ? 'fade-up' : null" :data-aos-delay="i * 100">
+            <v-icon :icon="stat.icon" size="48" :color="stat.color" class="mb-4 mx-auto"></v-icon>
+            <h3 class="text-h5 font-weight-bold mb-2">{{ stat.value }}</h3>
+            <p class="text-body-2 text-grey-darken-1 mb-0">{{ stat.label }}</p>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <!-- Карта Leaflet -->
       <v-row justify="center">
         <v-col
           cols="12"
           lg="10"
-          xl="8"
           :data-aos="animated ? 'fade-up' : null"
         >
           <v-card
-            class="map-card card-hover pa-2 card-animate"
+            class="map-card hl-card p-0"
             elevation="0"
             rounded="xl"
           >
-            <!-- Акцентная полоса -->
-            <div class="accent-bar"></div>
             <div id="map" class="map-container"></div>
+            
+            <!-- Легенда на карті -->
+            <div class="map-legend bg-white pa-3 rounded-lg elevation-2 d-none d-sm-block">
+              <h4 class="text-caption font-weight-bold mb-2 text-uppercase">Зони покриття</h4>
+              <div class="d-flex align-center mb-1">
+                <span class="legend-color" style="background: rgba(73, 203, 214, 0.4); border: 2px solid #49CBD6;"></span>
+                <span class="text-caption">Софіївська Борщагівка</span>
+              </div>
+              <div class="d-flex align-center mb-1">
+                <span class="legend-color" style="background: rgba(254, 209, 0, 0.4); border: 2px solid #FED100;"></span>
+                <span class="text-caption">Крюківщина</span>
+              </div>
+              <div class="d-flex align-center">
+                <span class="legend-color" style="background: rgba(38, 166, 154, 0.4); border: 2px solid #26A69A;"></span>
+                <span class="text-caption">П. Борщагівка</span>
+              </div>
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -31,8 +60,6 @@
 <script>
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "leaflet.markercluster";
-import "leaflet.markercluster/dist/MarkerCluster.css";
 
 export default {
   name: "CoverageMap",
@@ -42,21 +69,32 @@ export default {
   data() {
     return {
       map: null,
+      searchQuery: '',
+      isSearching: false,
+      searchResult: false,
+      networkStats: [
+        { icon: 'mdi-home-group', value: '3+', label: 'Населених пункти', color: '#49CBD6' },
+        { icon: 'mdi-flash', value: 'GPON', label: 'Сучасна технологія', color: '#FED100' },
+        { icon: 'mdi-battery-charging-100', value: '72 год', label: 'Резервування без світла', color: '#26A69A' }
+      ],
       providers: [
         { 
-          position: [50.405286709026306, 30.340234541191517], 
+          position: [50.405286, 30.340234], 
           label: "Софіївська Борщагівка", 
-          color: "#49CBD6"
+          color: "#49CBD6",
+          radius: 1800
         },
         { 
-          position: [50.37888222297798, 30.3704213348619], 
+          position: [50.378882, 30.370421], 
           label: "Крюківщина", 
-          color: "#FED100"
+          color: "#FED100",
+          radius: 1500
         },
         { 
-          position: [50.43839163743875, 30.350885357851297], 
+          position: [50.438391, 30.350885], 
           label: "Петропавлівська Борщагівка", 
-          color: "#26A69A"
+          color: "#26A69A",
+          radius: 1600
         }
       ]
     };
@@ -67,59 +105,76 @@ export default {
     });
   },
   methods: {
+    checkAddress() {
+      if (!this.searchQuery.trim()) return;
+      this.isSearching = true;
+      this.searchResult = false;
+      
+      // Імітація запиту до БД
+      setTimeout(() => {
+        this.isSearching = false;
+        this.searchResult = true;
+        
+        // Скрол до результату
+        if(window.innerWidth < 600) {
+           window.scrollBy({ top: 100, behavior: 'smooth' });
+        }
+      }, 1200);
+    },
     initMap() {
       // Initialize the map
       this.map = L.map("map", {
         zoomControl: false,
-        attributionControl: false
-      }).setView([50.4100, 30.3550], 11);
+        attributionControl: false,
+        scrollWheelZoom: false // Вимикаємо зум скролом для зручності на мобільних
+      }).setView([50.4100, 30.3550], 12);
 
       // Add zoom control
       L.control.zoom({
         position: 'topright'
       }).addTo(this.map);
 
-      // Add a custom tile layer
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      // Add a clean light map
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
         maxZoom: 19,
       }).addTo(this.map);
 
-      // Create a marker cluster group
-      const markers = L.markerClusterGroup({
-        showCoverageOnHover: false,
-        spiderfyOnMaxZoom: true,
-        maxClusterRadius: 50
-      });
-
-      // Add markers with custom icons and popups
+      // Add Zones (Circles) and Markers
       this.providers.forEach(provider => {
+        // Зона покриття (Круг)
+        L.circle(provider.position, {
+          color: provider.color,
+          fillColor: provider.color,
+          fillOpacity: 0.25,
+          weight: 2,
+          radius: provider.radius
+        }).addTo(this.map);
+
+        // Центральний маркер
         const icon = this.createCustomIcon(provider.color);
-        const marker = L.marker(provider.position, { icon })
+        L.marker(provider.position, { icon })
           .bindPopup(this.createPopupContent(provider.label), {
             className: 'happylink-popup',
             closeButton: true,
-            autoClose: false
-          });
-        markers.addLayer(marker);
+            minWidth: 220
+          })
+          .addTo(this.map);
       });
-
-      this.map.addLayer(markers);
     },
     createCustomIcon(color) {
-      // Create SVG icon
       const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36">
           <path fill="${color}" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-          <circle cx="12" cy="9" r="2.5" fill="white"/>
+          <circle cx="12" cy="9" r="3" fill="white"/>
         </svg>`;
 
       const iconUrl = 'data:image/svg+xml;base64,' + btoa(svg);
 
       return L.icon({
         iconUrl: iconUrl,
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-        popupAnchor: [0, -32]
+        iconSize: [36, 36],
+        iconAnchor: [18, 36],
+        popupAnchor: [0, -36]
       });
     },
     createPopupContent(label) {
@@ -129,12 +184,7 @@ export default {
             <h3 class="popup-title">${label}</h3>
           </div>
           <div class="popup-body">
-            <p class="popup-text">Інтернет та цифрове телебачення доступні в цьому районі.</p>
-          </div>
-          <div class="popup-footer">
-            <a href="#" class="popup-button" onclick="window.dispatchEvent(new CustomEvent('map-marker-clicked', { detail: '${label}' })); return false;">
-              Детальніше
-            </a>
+            <p class="popup-text"><strong>GPON & Ethernet</strong> мережа доступна.<br>100% резервування живлення.</p>
           </div>
         </div>
       `;
@@ -149,149 +199,88 @@ export default {
 </script>
 
 <style scoped>
-.map-section {
-  padding: 40px 0;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 40px;
-  position: relative;
-}
-
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 12px auto 0;
-  border-radius: 2px;
-}
-
 .map-card {
   position: relative;
-  background: #ffffff;
-  border: 1px solid #f0f0f0;
-  transition: all 0.3s ease;
   overflow: hidden;
-}
-
-.map-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-/* Акцентная полоса слева */
-.accent-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.03);
 }
 
 .map-container {
   width: 100%;
-  height: 500px;
-  border-radius: 16px;
+  height: 550px;
+  z-index: 1; /* Для правильного відображення підказок */
+}
+
+/* Легенда на карті */
+.map-legend {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.legend-color {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* Кастомные стили Leaflet попапов */
+:deep(.happylink-popup .leaflet-popup-content-wrapper) {
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 0;
   overflow: hidden;
 }
 
-/* Кастомные попапы */
-.happylink-popup .leaflet-popup-content-wrapper {
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-}
-
-.happylink-popup .leaflet-popup-content {
-  padding: 0 !important;
+:deep(.happylink-popup .leaflet-popup-content) {
   margin: 0 !important;
+  width: 100% !important;
 }
 
-.popup-container {
-  min-width: 250px;
-  font-family: 'Roboto', sans-serif;
+:deep(.happylink-popup .leaflet-popup-tip-container) {
+  display: none; /* Ховаємо стандартний трикутник, бо він псує дизайн */
 }
 
 .popup-header {
-  background: linear-gradient(135deg, #49CBD6, #26A69A);
+  background: linear-gradient(135deg, var(--hl-bg-light) 0%, #f0f0f0 100%);
   padding: 16px;
-  color: white;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .popup-title {
   margin: 0;
   font-size: 1.1rem;
-  font-weight: 600;
-  color: white;
+  font-weight: 700;
+  color: var(--hl-text-main);
+  text-align: center;
 }
 
 .popup-body {
   padding: 16px;
+  text-align: center;
 }
 
 .popup-text {
   margin: 0;
-  color: #424242;
+  color: var(--hl-text-muted);
   line-height: 1.5;
   font-size: 0.95rem;
 }
 
-.popup-footer {
-  padding: 12px 16px 16px;
-  text-align: center;
-}
-
-.popup-button {
-  display: inline-block;
-  background: linear-gradient(135deg, #49CBD6, #26A69A);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(38, 166, 154, 0.3);
-}
-
-.popup-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(38, 166, 154, 0.4);
-  background: linear-gradient(135deg, #3da5b1, #1e8a7d);
+.border-green {
+  border: 1px solid #c8e6c9;
 }
 
 /* Адаптив */
 @media (max-width: 600px) {
-  .section-title {
-    font-size: 1.25rem;
-    margin-bottom: 24px;
-  }
-
   .map-container {
-    height: 350px;
-  }
-
-  .popup-container {
-    min-width: 220px;
-  }
-
-  .popup-title {
-    font-size: 1rem;
-  }
-
-  .popup-text {
-    font-size: 0.9rem;
+    height: 400px;
   }
 }
 </style>

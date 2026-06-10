@@ -1,50 +1,81 @@
-<!-- AboutCompany.vue -->
 <template>
-  <div class="about-section">
-    <h2 class="section-title">
-      {{ $t('menu.about') }}
-    </h2>
-
+  <div class="about-section bg-grey-lighten-4 py-12">
     <v-container>
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="10"
-          lg="8"
-          xl="8"
-          :data-aos="animated ? 'fade-up' : null"
-        >
-          <v-card
-            class="about-card card-hover card-animate"
-            elevation="0"
-            rounded="xl"
-          >
-            <!-- Акцентная полоса слева -->
-            <div class="accent-bar"></div>
+      <div class="text-center mb-10">
+        <h2 class="text-h4 font-weight-bold text-uppercase" style="color: var(--hl-text-main);">
+          {{ $t('menu.about') }}
+        </h2>
+        <div class="title-divider mx-auto mt-3"></div>
+      </div>
 
-            <v-row class="align-start" no-gutters>
-              <!-- Изображение -->
-              <v-col
-                cols="12"
-                md="5"
-                class="d-flex align-center justify-center py-5 py-md-6 px-4 px-md-4"
-              >
-                <img
-                  src="@/assets/about-company/cyberspace.jpg"
-                  alt="HappyLink — надійний інтернет та домофонія"
-                  class="about-image"
-                />
-              </v-col>
+      <v-row justify="center" align="stretch">
+        <v-col cols="12" lg="5" class="d-flex flex-column">
+          <!-- Left side: Image and description -->
+          <v-card class="hl-card pa-6 pa-md-8 h-100 d-flex flex-column justify-center" rounded="xl" elevation="0">
+            <v-img
+              src="@/assets/about-company/cyberspace.jpg"
+              alt="HappyLink — надійний інтернет та домофонія"
+              class="rounded-xl mb-6 shadow-img"
+              cover
+              height="300"
+            ></v-img>
 
-              <!-- Текст -->
-              <v-col
-                cols="12"
-                md="7"
-                class="py-5 py-md-6 px-4 px-md-6"
-              >
-                <div class="about-content text-body-1" v-html="localizedText"></div>
+            <div class="text-body-1 text-grey-darken-3 lh-relaxed" v-html="localizedIntro"></div>
+          </v-card>
+        </v-col>
+
+        <v-col cols="12" lg="7" class="d-flex flex-column gap-6">
+          <!-- Top right: Advantages Grid -->
+          <v-card class="hl-card pa-6 pa-md-8 flex-grow-1" rounded="xl" elevation="0">
+            <h3 class="text-h6 font-weight-bold mb-6 d-flex align-center">
+              <v-icon color="secondary" size="28" class="mr-3">mdi-star-circle-outline</v-icon>
+              {{ isUa ? 'Наші переваги' : 'Our advantages' }}
+            </h3>
+            
+            <v-row>
+              <v-col cols="12" sm="6" v-for="(adv, index) in localizedAdvantages" :key="index">
+                <div class="d-flex align-start advantage-item pa-3 rounded-lg">
+                  <v-icon :color="adv.color || 'primary'" size="32" class="mr-4 mt-1">{{ adv.icon }}</v-icon>
+                  <div>
+                    <h4 class="font-weight-bold text-body-1 mb-1">{{ adv.title }}</h4>
+                    <p class="text-body-2 text-grey-darken-1 mb-0">{{ adv.text }}</p>
+                  </div>
+                </div>
               </v-col>
             </v-row>
+          </v-card>
+
+          <!-- Bottom right: Documents -->
+          <v-card class="hl-card pa-6 pa-md-8" rounded="xl" elevation="0" style="background: linear-gradient(135deg, #49CBD6 0%, #26A69A 100%);">
+            <h3 class="text-h6 font-weight-bold text-white mb-4 d-flex align-center">
+              <v-icon color="white" size="28" class="mr-3">mdi-file-document-multiple-outline</v-icon>
+              {{ isUa ? 'Документи' : 'Documents' }}
+            </h3>
+            
+            <div class="d-flex flex-wrap gap-4">
+              <v-btn
+                href="/static/files/pub_ofert.pdf"
+                target="_blank"
+                color="white"
+                variant="flat"
+                prepend-icon="mdi-download"
+                rounded="pill"
+                class="text-primary font-weight-bold px-6"
+              >
+                {{ isUa ? 'Публічний договір' : 'Public contract' }}
+              </v-btn>
+              <v-btn
+                href="/static/files/pub_ofert_intercom.pdf"
+                target="_blank"
+                color="white"
+                variant="flat"
+                prepend-icon="mdi-download"
+                rounded="pill"
+                class="text-primary font-weight-bold px-6"
+              >
+                {{ isUa ? 'Договір домофон' : 'Intercom contract' }}
+              </v-btn>
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -54,246 +85,75 @@
 
 <script>
 export default {
-  name: "AboutCompany",
-  props: {
-    animated: { type: Boolean, default: true },
-  },
-  data() {
-    return {
-      text_ua: `
-        <p>
-          Компанія <strong>HappyLink</strong> надає доступ до мережі інтернет за технологією FTTB (Fiber to the Building) та PON (Passive Optical Network).<br>
-          Також ми виконуємо роботи з монтажу та обслуговування систем домофонії та контролю доступу.
-        </p>
-        <h4 class="about-subtitle">Наші переваги:</h4>
-        <ul class="about-list">
-          <li>швидка реакція на звернення абонентів та виклики сьогодення (всі комутатори в нас повністю запущені також ми активно розбудовуємо мережу PON);</li>
-          <li>найбільша швидкість доступу – до 1000 Мбіт/сек;</li>
-          <li>стабільність і надійність зв’язку;</li>
-          <li>безкоштовний виклик майстра;</li>
-          <li>доступні ціни.</li>
-        </ul>
-        <h4 class="about-subtitle">Документи:</h4>
-        <ul class="about-list">
-          <li><a href="/static/files/pub_ofert.pdf" target="_blank" class="internal-link">Публічний договір</a></li>
-          <li><a href="/static/files/pub_ofert_intercom.pdf" target="_blank" class="internal-link">Договір домофон</a></li>
-        </ul>
-      `,
-      text_en: `
-        <p>
-          The company <strong>HappyLink</strong> provides access to the internet using FTTB (Fiber to the Building) and PON (Passive Optical Network) technologies.<br>
-          We also perform installation and maintenance of intercom systems and access control.
-        </p>
-        <h4 class="about-subtitle">Our advantages:</h4>
-        <ul class="about-list">
-          <li>quick response to subscriber requests and today's challenges (all switches are fully operational, and we are actively expanding the PON network);</li>
-          <li>the highest access speed - up to 1000 Mbps;</li>
-          <li>stability and reliability of the connection;</li>
-          <li>free technician visits;</li>
-          <li>affordable prices.</li>
-        </ul>
-        <h4 class="about-subtitle">Documents:</h4>
-        <ul class="about-list">
-          <li><a href="/static/files/pub_ofert.pdf" target="_blank" class="internal-link">Public contract</a></li>
-          <li><a href="/static/files/pub_ofert_intercom.pdf" target="_blank" class="internal-link">Intercom contract</a></li>
-        </ul>
-      `,
-    };
-  },
+  name: 'AboutCompany',
   computed: {
-    localizedText() {
-      return this.$i18n.locale === 'ua' ? this.text_ua : this.text_en;
+    isUa() {
+      return this.$i18n.locale === 'ua'
+    },
+    localizedIntro() {
+      if (this.isUa) {
+        return `Компанія <strong>HappyLink</strong> надає доступ до мережі інтернет за технологією FTTB (Fiber to the Building) та PON (Passive Optical Network).<br><br>
+                Також ми професійно виконуємо роботи з монтажу та обслуговування систем домофонії та контролю доступу для вашої безпеки.`
+      }
+      return `The company <strong>HappyLink</strong> provides access to the internet using FTTB (Fiber to the Building) and PON (Passive Optical Network) technologies.<br><br>
+              We also professionally perform installation and maintenance of intercom systems and access control for your security.`
+    },
+    localizedAdvantages() {
+      if (this.isUa) {
+        return [
+          { icon: 'mdi-rocket-launch', color: '#ff6b6b', title: 'Висока швидкість', text: 'Найбільша швидкість доступу – до 1000 Мбіт/сек' },
+          { icon: 'mdi-shield-check', color: '#4ecdc4', title: 'Надійність', text: 'Стабільність і надійність зв’язку за будь-яких умов' },
+          { icon: 'mdi-clock-fast', color: '#feca57', title: 'Швидка реакція', text: 'Миттєве реагування на звернення, активна розбудова мережі PON' },
+          { icon: 'mdi-tools', color: '#ff9f43', title: 'Безкоштовний майстер', text: 'Безкоштовний виклик майстра для підключення' },
+          { icon: 'mdi-currency-usd', color: '#10ac84', title: 'Доступні ціни', text: 'Гнучкі тарифи, вигідні акції та лояльні ціни' }
+        ]
+      }
+      return [
+        { icon: 'mdi-rocket-launch', color: '#ff6b6b', title: 'High Speed', text: 'The highest access speed - up to 1000 Mbps' },
+        { icon: 'mdi-shield-check', color: '#4ecdc4', title: 'Reliability', text: 'Stability and reliability of the connection in any conditions' },
+        { icon: 'mdi-clock-fast', color: '#feca57', title: 'Quick Response', text: 'Instant response to requests, active PON network expansion' },
+        { icon: 'mdi-tools', color: '#ff9f43', title: 'Free Technician', text: 'Free technician visits for connection setup' },
+        { icon: 'mdi-currency-usd', color: '#10ac84', title: 'Affordable Prices', text: 'Flexible tariffs, great promotions and loyal prices' }
+      ]
     }
   }
-};
+}
 </script>
 
 <style scoped>
-.about-section {
-  padding: 48px 0;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 40px;
-  position: relative;
-}
-
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 12px auto 0;
+.title-divider {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(135deg, var(--hl-secondary), #ff9f43);
   border-radius: 2px;
 }
 
-.about-card {
-  position: relative;
-  background: #ffffff;
-  border: 1px solid #f0f0f0;
-  transition: all 0.3s ease;
-  overflow: hidden;
+.lh-relaxed {
+  line-height: 1.8;
 }
 
-.about-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-.accent-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
-}
-
-.about-image {
-  max-width: 100%;
-  height: auto;
-  width: 100%;
-  max-height: 320px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.shadow-img {
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
 }
 
-.about-image:hover {
-  transform: scale(1.02);
+.shadow-img:hover {
+  transform: translateY(-5px);
 }
 
-.about-content {
-  line-height: 1.7;
-  color: #424242;
+.advantage-item {
+  transition: background-color 0.2s ease;
 }
 
-.about-content h4.about-subtitle {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #2c3e50;
-  margin: 24px 0 12px;
+.advantage-item:hover {
+  background-color: #f8f9fa;
 }
 
-.about-content ul.about-list {
-  padding-left: 24px;
-  margin-bottom: 20px;
-  line-height: 1.6;
+.gap-4 {
+  gap: 16px;
 }
 
-.about-content ul.about-list li {
-  margin-bottom: 10px;
-}
-
-.about-content ul.about-list li::before {
-  content: "•";
-  color: #26A69A;
-  font-weight: bold;
-  display: inline-block;
-  width: 1em;
-  margin-left: -1em;
-}
-
-.about-content a.internal-link {
-  color: #26A69A;
-  text-decoration: none;
-  border-bottom: 1px dashed #26A69A;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.about-content a.internal-link:hover {
-  background-color: #e8f5f3;
-  border-bottom-style: solid;
-}
-
-/* Адаптивность — улучшенная логика */
-@media (max-width: 960px) {
-  .about-card {
-    border-radius: 16px;
-  }
-
-  .about-image {
-    max-height: 280px;
-    border-radius: 10px;
-  }
-
-  .about-content h4.about-subtitle {
-    font-size: 1.1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .about-section {
-    padding: 40px 0;
-  }
-
-  .section-title {
-    font-size: 1.35rem;
-    margin-bottom: 32px;
-  }
-
-  .about-image {
-    max-height: 240px;
-    border-radius: 8px;
-  }
-
-  .about-content {
-    font-size: 0.95rem;
-  }
-
-  .about-content h4.about-subtitle {
-    font-size: 1.05rem;
-    margin: 20px 0 10px;
-  }
-
-  .about-content ul.about-list {
-    padding-left: 20px;
-  }
-
-  .about-content ul.about-list li {
-    margin-bottom: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .about-section {
-    padding: 32px 0;
-  }
-
-  .section-title {
-    font-size: 1.25rem;
-    margin-bottom: 28px;
-  }
-
-  .about-image {
-    max-height: 200px;
-    border-radius: 6px;
-  }
-
-  .about-content {
-    font-size: 0.9rem;
-    line-height: 1.65;
-  }
-
-  .about-content h4.about-subtitle {
-    font-size: 1rem;
-    margin: 18px 0 8px;
-  }
-
-  .about-content ul.about-list {
-    padding-left: 18px;
-  }
+.gap-6 {
+  gap: 24px;
 }
 </style>

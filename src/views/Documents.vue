@@ -1,7 +1,7 @@
 <!-- Documents.vue -->
 <template>
   <div class="documents-section">
-    <h2 class="section-title">
+    <h2 class="hl-section-title">
       {{ $t('footer.docs') }}
     </h2>
 
@@ -207,26 +207,9 @@ export default {
   padding: 40px 0;
 }
 
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 24px;
-  position: relative;
-}
 
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 12px auto 0;
-  border-radius: 2px;
-}
+
+
 
 .category-toggle {
   display: inline-flex;
@@ -286,10 +269,7 @@ export default {
 }
 
 @media (max-width: 600px) {
-  .section-title {
-    font-size: 1.25rem;
-    margin-bottom: 24px;
-  }
+  
 
   .document-card {
     padding: 16px !important;

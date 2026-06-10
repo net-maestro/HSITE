@@ -1,14 +1,14 @@
 <!-- components/PromoSlider.vue -->
 <template>
-  <div class="promo-slider-container">
+  <div class="promo-slider-container my-md-4 my-2 mx-md-4 rounded-xl elevation-2 overflow-hidden">
     <v-carousel
       v-if="sliderPromos.length > 0"
       :show-arrows="false"
       hide-delimiter-background
-      delimiter-icon="mdi-circle"
-      height="500px"
+      delimiter-icon="mdi-circle-medium"
+      height="550px"
       cycle
-      interval="7000"
+      interval="6000"
       class="promo-carousel"
       :progress="false"
     >
@@ -18,50 +18,60 @@
         class="promo-slide"
         @click="goToDetail(promo.id)"
       >
-        <!-- Градиентный оверлей для контраста текста -->
+        <!-- Фоновое изображение с эффектом Zoom -->
+        <div class="slide-bg-wrapper">
+          <v-img
+            :src="promo.image"
+            cover
+            height="100%"
+            class="slide-bg"
+            :class="{ 'grayscale': !promo.status }"
+          ></v-img>
+        </div>
+
+        <!-- Градиентный оверлей для премиального вида -->
         <div class="overlay"></div>
 
-        <!-- Фоновое изображение -->
-        <v-img
-          :src="promo.image"
-          cover
-          height="100%"
-          class="slide-bg"
-          :class="{ 'grayscale': !promo.status }"
-        ></v-img>
-
         <!-- Контент поверх изображения -->
-        <div class="slide-content d-flex flex-column justify-center px-4 px-md-8">
-          <div class="d-flex align-center mb-2">
-            <v-chip
-              :color="!promo.status ? 'error' : 'success'"
-              size="small"
-              class="text-uppercase font-weight-bold"
-            >
-              {{ !promo.status ? $t('promo.inactive') : $t('promo.active') }}
-            </v-chip>
-          </div>
+        <v-container class="h-100 position-relative z-index-2">
+          <v-row class="h-100 align-center">
+            <v-col cols="12" md="8" lg="7" class="slide-content pl-md-8">
+              
+              <v-chip
+                :color="!promo.status ? 'error' : 'secondary'"
+                :class="!promo.status ? 'text-white' : 'text-black'"
+                size="small"
+                class="text-uppercase font-weight-bold mb-4 px-4 py-3 slide-animate-chip"
+                elevation="2"
+              >
+                {{ !promo.status ? $t('promo.inactive') : $t('promo.active') }}
+              </v-chip>
 
-          <h2 class="slide-title text-h3 font-weight-black text-white mb-3">
-            {{ promo.title }}
-          </h2>
+              <h2 class="slide-title text-h3 text-md-h2 font-weight-black text-white mb-4 slide-animate-title">
+                {{ promo.title }}
+              </h2>
 
-          <p class="slide-excerpt text-body-1 text-white mb-5" style="max-width: 600px; opacity: 0.9;">
-            {{ getExcerpt(promo.description) }}
-          </p>
+              <p class="slide-excerpt text-h6 text-md-h5 text-white mb-8 slide-animate-text font-weight-regular" style="opacity: 0.9;">
+                {{ getExcerpt(promo.description) }}
+              </p>
 
-          <v-btn
-            size="x-large"
-            rounded="pill"
-            variant="flat"
-            :color="!promo.status ? '#b38800' : '#b38800'"
-            class="slide-cta text-capitalize font-weight-bold"
-            prepend-icon="mdi-arrow-right"
-            style="max-width: 280px;"
-          >
-            {{ $t('promo.details') }}
-          </v-btn>
-        </div>
+              <div class="slide-animate-btn">
+                <v-btn
+                  size="x-large"
+                  rounded="pill"
+                  variant="flat"
+                  color="secondary"
+                  class="slide-cta text-none font-weight-bold px-8"
+                  append-icon="mdi-arrow-right"
+                  elevation="4"
+                >
+                  {{ $t('promo.details') }}
+                </v-btn>
+              </div>
+
+            </v-col>
+          </v-row>
+        </v-container>
       </v-carousel-item>
     </v-carousel>
 
@@ -105,8 +115,8 @@ export default {
       const div = document.createElement('div')
       div.innerHTML = htmlString
       let text = div.textContent || div.innerText || ''
-      if (text.length > 180) {
-        text = text.substring(0, 180) + '...'
+      if (text.length > 150) {
+        text = text.substring(0, 150) + '...'
       }
       return text
     }
@@ -118,152 +128,161 @@ export default {
 .promo-slider-container {
   position: relative;
   width: 100%;
-  overflow: hidden;
-  border-radius: 16px;
-  margin: 5px 0;
-}
-
-.promo-carousel :deep(.v-window-item) {
-  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .promo-slide {
   cursor: pointer;
   position: relative;
-  height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 100%;
 }
 
-/* Градиентный оверлей для контраста текста */
+/* Эффект зума для фона */
+.slide-bg-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.slide-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 6s linear; /* Плавный долгий зум */
+  transform: scale(1);
+}
+
+/* При активации слайда запускаем зум */
+.v-window-item--active .slide-bg {
+  transform: scale(1.08);
+}
+
+.slide-bg.grayscale {
+  filter: grayscale(100%) brightness(0.7);
+}
+
+/* Оверлей для текста (градиент) */
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 100%);
+  background: linear-gradient(90deg, rgba(15,23,42,0.9) 0%, rgba(15,23,42,0.6) 40%, rgba(15,23,42,0.1) 100%);
   z-index: 1;
-  border-radius: 16px;
 }
 
-/* Фоновое изображение */
-.slide-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  filter: brightness(0.9);
-  transition: filter 0.3s ease;
-}
-
-.slide-bg.grayscale {
-  filter: grayscale(100%) brightness(0.7) opacity(0.8);
-}
-
-/* Контент поверх изображения */
-.slide-content {
-  position: relative;
+.z-index-2 {
   z-index: 2;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  max-width: 1200px;
-  width: 100%;
 }
 
+/* Анимации контента внутри слайда */
+.slide-animate-chip,
+.slide-animate-title,
+.slide-animate-text,
+.slide-animate-btn {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.v-window-item--active .slide-animate-chip {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+.v-window-item--active .slide-animate-title {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+.v-window-item--active .slide-animate-text {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.4s;
+}
+.v-window-item--active .slide-animate-btn {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.5s;
+}
+
+/* Текст */
 .slide-title {
-  line-height: 1.2;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  line-height: 1.1;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
 .slide-excerpt {
-  line-height: 1.6;
-  font-size: 1.1rem;
+  line-height: 1.5;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
+/* Кнопка */
 .slide-cta {
-  align-self: flex-start;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
 .slide-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(73, 203, 214, 0.4) !important;
 }
 
-/* Стиль индикаторов слайдов */
+/* Индикаторы (точки) внизу */
 .promo-carousel :deep(.v-carousel__controls) {
-  bottom: 32px !important;
+  bottom: 24px !important;
 }
 
 .promo-carousel :deep(.v-btn--icon.v-btn--density-default) {
-  width: 12px !important;
-  height: 12px !important;
-  background-color: rgba(255, 255, 255, 0.5) !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 6px !important;
+  color: rgba(255,255,255,0.4) !important;
 }
 
-.promo-carousel :deep(.v-btn--icon.v-btn--density-default.v-btn--active) {
-  background-color: white !important;
-  width: 32px !important;
-  border-radius: 6px;
+.promo-carousel :deep(.v-btn--active) {
+  color: #fed100 !important;
+  transform: scale(1.2);
 }
 
 /* Адаптив */
 @media (max-width: 960px) {
   .promo-slider-container {
-    margin: 16px 0;
+    margin: 0 !important;
+    border-radius: 0;
   }
-
-  .slide-content {
-    padding: 0 24px;
-  }
-
+  
   .slide-title {
-    font-size: 2rem !important;
+    font-size: 2.2rem !important;
   }
-
-  .slide-excerpt {
-    font-size: 1rem;
+  
+  .overlay {
+    background: linear-gradient(180deg, rgba(15,23,42,0.2) 0%, rgba(15,23,42,0.8) 60%, rgba(15,23,42,0.95) 100%);
   }
 }
 
 @media (max-width: 600px) {
-  .promo-slider-container {
-    height: auto;
+  .promo-carousel {
+    height: 480px !important;
   }
-
-  .promo-slide {
-    height: 400px;
-  }
-
+  
   .slide-content {
-    padding: 0 16px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    padding-top: 100px;
   }
 
   .slide-title {
-    font-size: 1.5rem !important;
-    text-align: center;
+    font-size: 1.8rem !important;
   }
 
   .slide-excerpt {
-    text-align: center;
-    margin: 0 auto 24px;
-  }
-
-  .slide-cta {
-    align-self: center;
-  }
-
-  .overlay {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
+    font-size: 1.1rem !important;
   }
 }
 </style>

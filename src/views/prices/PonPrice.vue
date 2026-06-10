@@ -1,7 +1,7 @@
 <!-- PonTariffs.vue -->
 <template>
   <div class="tariffs-section">
-    <h2 class="section-title">
+    <h2 class="hl-section-title">
       {{ $t("menu.internet") }} <span class="pon-tag">PON</span>
     </h2>
 
@@ -317,26 +317,9 @@ export default {
   padding: 40px 0;
 }
 
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 15px;
-  position: relative;
-}
 
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #49CBD6, #26A69A);
-  margin: 12px auto 0;
-  border-radius: 2px;
-}
+
+
 
 .pon-tag {
   background: linear-gradient(135deg, #49CBD6, #26A69A);
@@ -436,10 +419,7 @@ export default {
 
 /* Адаптив */
 @media (max-width: 600px) {
-  .section-title {
-    font-size: 1.25rem;
-    margin-bottom: 24px;
-  }
+  
 
   .pon-tag {
     font-size: 0.75rem;

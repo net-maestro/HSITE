@@ -1,82 +1,111 @@
 <!-- views/Promotions.vue -->
 <template>
-  <!-- Заголовок -->
-  <!-- <v-card-subtitle class="subtitle-slider text-center text-h6 text-uppercase mt-2">
-    {{ $t('menu.promo') }}
-  </v-card-subtitle> -->
-  <div class="promo-section">
-  <h2 class="section-title">
-      {{ $t("menu.promo") }}
-    </h2>
-
-
-  <div class="promotions-wrapper">
-    <v-container>
-      <!-- Активные акции -->
-      <v-row>
-        <v-col
-          v-for="(promo, index) in activePromos"
-          :key="'active-' + index"
-          cols="12"
-          md="4"
-        >
-          <PromoCard :promo="promo" :show-details-button="true" @details="openModal(promo)" />
-        </v-col>
-      </v-row>
-
-      <!-- Кнопка показать архив -->
-      <div class="text-center mt-6">
-        <v-btn
-          v-if="!showInactive"
-          color="grey"
-          variant="text"
-          @click="showInactive = true"
-        >
-          {{ $t('promo.show-archived') }}
-        </v-btn>
-      </div>
-
-      <!-- Неактивные акции (если показываем) -->
-      <template v-if="showInactive">
-        <v-card-subtitle class="text-center text-h6 text-uppercase font-weight-medium mt-8 mb-4 text-grey">
-          {{ $t('promo.inactive-promotions') }}
-        </v-card-subtitle>
-        <v-row>
-          <v-col
-            v-for="(promo, index) in inactivePromos"
-            :key="'inactive-' + index"
-            cols="12"
-            md="6"
-          >
-            <PromoCard :promo="promo" />
+  <div class="promotions-page">
+    
+    <!-- Hero Banner -->
+    <div class="promo-hero bg-grey-lighten-4 pb-10 pt-16">
+      <v-container>
+        <v-row justify="center" class="text-center">
+          <v-col cols="12" md="8">
+            <v-icon icon="mdi-gift-outline" color="secondary" size="64" class="mb-4"></v-icon>
+            <h1 class="text-h3 font-weight-black mb-4 text-grey-darken-4">
+              {{ $t("menu.promo") }}
+            </h1>
+            <p class="text-h6 text-grey-darken-1 mx-auto" style="max-width: 600px; line-height: 1.4;">
+              Підключайтесь вигідно! Найкращі пропозиції для нових та існуючих абонентів HappyLink.
+            </p>
           </v-col>
         </v-row>
-      </template>
-    </v-container>
-  </div>
+      </v-container>
+    </div>
 
-  <!-- Модалка с деталями -->
-  <v-dialog v-model="modalOpen" max-width="800px">
-    <v-card>
-      <v-card-title class="text-h5">{{ selectedPromo?.title }}</v-card-title>
-      <v-card-text>
-        <v-img
-          v-if="selectedPromo?.image"
-          :src="selectedPromo.image"
-          height="300"
-          class="mb-4 rounded-lg"
-          :class="{ 'grayscale': !selectedPromo.status }"
-        ></v-img>
-        <div v-html="selectedPromo?.description"></div>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" @click="modalOpen = false">
-          {{ $t('close') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    <!-- Основной контент -->
+    <div class="promotions-wrapper pb-12">
+      <v-container>
+        <!-- Активные акции -->
+        <v-row class="mt-n10">
+          <v-col
+            v-for="(promo, index) in activePromos"
+            :key="'active-' + index"
+            cols="12"
+            md="4"
+            :data-aos="animated ? 'fade-up' : null"
+            :data-aos-delay="index * 100"
+          >
+            <PromoCard :promo="promo" :show-details-button="true" @details="openModal(promo)" class="h-100" />
+          </v-col>
+        </v-row>
+
+        <!-- Кнопка показать архив -->
+        <div class="text-center mt-12 mb-6">
+          <v-btn
+            v-if="!showInactive"
+            color="primary"
+            variant="tonal"
+            rounded="pill"
+            class="font-weight-bold px-8"
+            @click="showInactive = true"
+            prepend-icon="mdi-history"
+          >
+            {{ $t('promo.show-archived') }}
+          </v-btn>
+        </div>
+
+        <!-- Неактивные акции -->
+        <v-expand-transition>
+          <div v-if="showInactive">
+            <div class="text-center mb-8 mt-4">
+              <v-divider class="mb-6"></v-divider>
+              <h3 class="text-h5 font-weight-bold text-grey">
+                {{ $t('promo.inactive-promotions') }}
+              </h3>
+            </div>
+            
+            <v-row>
+              <v-col
+                v-for="(promo, index) in inactivePromos"
+                :key="'inactive-' + index"
+                cols="12"
+                md="6"
+                lg="4"
+              >
+                <PromoCard :promo="promo" class="opacity-80" />
+              </v-col>
+            </v-row>
+          </div>
+        </v-expand-transition>
+      </v-container>
+    </div>
+
+    <!-- Модалка с деталями -->
+    <v-dialog v-model="modalOpen" max-width="800px">
+      <v-card rounded="xl" class="overflow-hidden">
+        <div class="bg-primary px-6 py-4 d-flex justify-space-between align-center">
+          <h3 class="text-h6 font-weight-bold text-white mb-0">{{ selectedPromo?.title }}</h3>
+          <v-btn icon="mdi-close" variant="text" color="white" @click="modalOpen = false"></v-btn>
+        </div>
+        
+        <v-card-text class="pa-6">
+          <v-img
+            v-if="selectedPromo?.image"
+            :src="selectedPromo.image"
+            height="350"
+            cover
+            class="mb-6 rounded-lg elevation-2"
+            :class="{ 'grayscale': !selectedPromo.status }"
+          ></v-img>
+          
+          <div class="promo-html-content text-body-1" v-html="selectedPromo?.description"></div>
+        </v-card-text>
+        
+        <v-divider></v-divider>
+        <v-card-actions class="pa-4 justify-center">
+          <v-btn color="secondary" variant="flat" rounded="pill" class="px-8 font-weight-bold text-black" @click="modalOpen = false">
+            {{ $t('close') }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
   </div>
 </template>
@@ -88,6 +117,9 @@ import PromoCard from '@/components/PromoCard.vue'
 export default {
   name: 'PromotionsView',
   components: { PromoCard },
+  props: {
+    animated: { type: Boolean, default: true },
+  },
   data() {
     return {
       modalOpen: false,
@@ -98,7 +130,7 @@ export default {
   computed: {
     localizedPromos() {
       const { getPromotions } = usePromotions()
-      return getPromotions(this.$i18n.locale) // ✅ Теперь работает!
+      return getPromotions(this.$i18n.locale)
     },
     activePromos() {
       return this.localizedPromos.filter(p => p.status)
@@ -117,130 +149,43 @@ export default {
 </script>
 
 <style scoped>
-.v-card .v-card-title {white-space: unset;}
-
-.promo-section {
-  padding: 40px 0;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 40px;
+.promo-hero {
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
   position: relative;
-}
-
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 12px auto 0;
-  border-radius: 2px;
-}
-
-.promo-card {
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid #eeeeee;
-  min-height: 500px;
-}
-
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
-
-.promo-image {
-  max-height: 280px;
-  object-fit: contain;
-  transition: filter 0.3s ease;
-}
-
-.grayscale {
-  filter: grayscale(100%) opacity(0.7);
-}
-
-/* Лента статуса */
-.ribbon {
-  position: absolute;
-  top: 16px;
-  right: -30px;
-  width: 160px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: rotate(45deg);
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: white;
-  z-index: 2;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.ribbon-active {
-  background: linear-gradient(135deg, #49CBD6 0%, #26A69A 100%);
-}
-
-.ribbon-inactive {
-  background: linear-gradient(135deg, #D9534F 0%, #C12E27 100%);
-  opacity: 0.8;
-}
-
-/* Прокрутка текста */
-.description-scroll {
-  max-height: 200px;
-  overflow-y: auto;
-  line-height: 1.6;
-  font-size: 0.95rem;
-  padding: 0 16px;
-  margin-bottom: 8px;
-}
-
-.description-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-
-.description-scroll::-webkit-scrollbar-thumb {
-  background-color: #c1c1c1;
-  border-radius: 10px;
-}
-
-.description-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Адаптив */
-@media (max-width: 600px) {
-  .promo-card {
-    min-height: 460px;
-    padding: 16px;
-  }
-  .promo-image {
-    max-height: 200px;
-  }
-  .description-scroll {
-    max-height: 200px;
-    font-size: 0.875rem;
-  }
+  z-index: 1;
 }
 
 .promotions-wrapper {
-  background-color: #fafafa;
-  padding: 16px 0;
-  border-radius: 12px;
+  position: relative;
+  z-index: 2;
+  background-color: #ffffff;
 }
 
-@media (min-width: 960px) {
-  .promotions-wrapper {
-    padding: 32px 0;
-  }
+.opacity-80 {
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.opacity-80:hover {
+  opacity: 1;
+}
+
+.promo-html-content {
+  line-height: 1.7;
+  color: #424242;
+}
+
+.promo-html-content :deep(p) {
+  margin-bottom: 16px;
+}
+
+.promo-html-content :deep(ul) {
+  margin-bottom: 16px;
+  padding-left: 24px;
+}
+
+.promo-html-content :deep(li) {
+  margin-bottom: 8px;
 }
 </style>

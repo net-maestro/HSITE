@@ -33,7 +33,7 @@
 
     <!-- 5 причин -->
     <v-container>
-      <h2 class="section-title mb-6">
+      <h2 class="hl-section-title mb-6">
         {{ $t('surveillance.reasonsTitle') }}
       </h2>
 
@@ -230,26 +230,9 @@ export default {
   line-height: 1.7;
 }
 
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 40px;
-  position: relative;
-}
 
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 12px auto 0;
-  border-radius: 2px;
-}
+
+
 
 .blog-card {
   position: relative;
@@ -343,10 +326,7 @@ export default {
     font-size: 0.95rem;
   }
 
-  .section-title {
-    font-size: 1.25rem;
-    margin-bottom: 24px;
-  }
+  
 
   .blog-card {
     padding: 16px !important;

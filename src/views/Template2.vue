@@ -2,7 +2,7 @@
   <v-container v-if="$vuetify.display.mdAndDown" class="menu-tiles-container">
     <!-- Тарифи -->
     <v-col cols="12" class="mt-1">
-      <h2 class="section-title">
+      <h2 class="hl-section-title">
         {{ $t("menu.rates") }}
       </h2>
 
@@ -30,7 +30,7 @@
 
     <!-- Послуги -->
     <v-col cols="12" class="mt-1">
-      <h2 class="section-title">
+      <h2 class="hl-section-title">
         {{ $t("menu.service") }}
       </h2>
 
@@ -58,7 +58,7 @@
 
     <!-- Інше -->
     <v-col cols="12" class="mt-1">
-      <h2 class="section-title">
+      <h2 class="hl-section-title">
         {{ $t("menu.other") }}
       </h2>
 
@@ -88,7 +88,7 @@
   <!-- Десктопная версия -->
   <div v-else>
     <SliderPromo />
-      <TestPrice />
+    <TestPrice />
     <Promotions />
     <TestService />
     <Shop :devices="firstThreeItems" />
@@ -102,15 +102,17 @@ import Blog from "@/views/Blog.vue";
 import Shop from "@/views/Shop.vue";
 import Promotions from "@/views/Promotions.vue";
 import TestService from "@/views/services/TestService.vue";
+import SliderPromo from "@/components/SliderPromo.vue";
 
 export default {
-  name: "MenuTiles",
+  name: "Template2",
   components: {
     Blog,
     Promotions,
     Shop,
     TestService,
-    TestPrice
+    TestPrice,
+    SliderPromo
   },
   props: {
     animated: { type: Boolean, default: true },
@@ -124,7 +126,7 @@ export default {
           img: `http://happylink.net.ua/static/shop/archerc54.jpg`,
           rating: 5,
           price: 1150,
-          Info: `<div class="spec"><span class="spec-title">Тип:</span><span class="spec-value">Гігабітний бездротовий маршрутизатор дводіапазонний</span></div><div class="spec"><span class="spec-title">Стандарт бездротового зв’язку:</span><span class="spec-value">Wi-Fi 802.11 b / g / n / a / ac</span></div><div class="spec"><span class="spec-title">Інтерфейс підключення (LAN-порт):</span><span class="spec-value">4x 10/100 Ethernet</span></div><div class="spec"><span class="spec-title">Вхід (WAN-порт):</span><span class="spec-value">1x 10/100 Ethernet</span></div>`,
+          Info: `<div class="spec"><span class="spec-title">Тип:</span><span class="spec-value">Гігабітний бездротовий маршрутизатор дводіапазонний</span></div>`,
         },
         {
           name: "TP-LINK Archer C64",
@@ -132,7 +134,7 @@ export default {
           img: `http://happylink.net.ua/static/shop/archerc64.jpg`,
           rating: 5,
           price: 1600,
-          Info: `<div class="spec"><span class="spec-title">Тип:</span><span class="spec-value">Гігабітний бездротовий маршрутизатор дводіапазонний</span></div><div class="spec"><span class="spec-title">Стандарт бездротового зв’язку:</span><span class="spec-value">Wi-Fi 802.11 b / g / n / a / ac</span></div><div class="spec"><span class="spec-title">Інтерфейс підключення (LAN-порт):</span><span class="spec-value">4x 10/100/1000 Ethernet</span></div><div class="spec"><span class="spec-title">Вхід (WAN-порт):</span><span class="spec-value">1x 10/100/1000 Ethernet</span></div>`,
+          Info: `<div class="spec"><span class="spec-title">Тип:</span><span class="spec-value">Гігабітний бездротовий маршрутизатор дводіапазонний</span></div>`,
         },
         {
           name: "TP-LINK Archer AX20",
@@ -140,31 +142,7 @@ export default {
           img: `http://happylink.net.ua/static/shop/ax20.jpg`,
           rating: 4,
           price: 2999,
-          Info: `<div class="spec"><span class="spec-title">Тип:</span><span class="spec-value">Гігабітний бездротовий маршрутизатор дводіапазонний</span></div><div class="spec"><span class="spec-title">Стандарт бездротового зв’язку:</span><span class="spec-value">WiFi 6 (802.11 g/n/ac/ax)</span></div><div class="spec"><span class="spec-title">Інтерфейс підключення (LAN-порт):</span><span class="spec-value">4x 10/100/1000 Ethernet</span></div><div class="spec"><span class="spec-title">Вхід (WAN-порт):</span><span class="spec-value">1x 10/100/1000 Ethernet</span></div>`,
-        },
-        {
-          name: "Mikrotik hAP ac² (RBD52G-5HacD2HnD-TC)",
-          category: "WI-FI Роутери",
-          img: `http://happylink.net.ua/static/shop/mikrotik.jpg`,
-          rating: 3,
-          price: 2975,
-          Info: `<div class="spec"><span class="spec-title">Тип:</span><span class="spec-value">Гігабітний бездротовий маршрутизатор дводіапазонний</span></div><div class="spec"><span class="spec-title">Стандарт бездротового зв’язку</span><span class="spec-value">Wi-Fi 802.11 b / g / n / a / ac</span></div><div class="spec"><span class="spec-title">Інтерфейс підключення (LAN-порт)</span><span class="spec-value">5x 10/100/1000 Ethernet</span></div><div class="spec"><span class="spec-title">Процесор</span><span class="spec-value">частотою 716 MHz</span></div><div class="spec"><span class="spec-title">ОЗУ</span><span class="spec-value">частотою 716 MHz</span></div><div class="spec"><span class="spec-title">USB порт</span><span class="spec-value">наявний</span></div>`,
-        },
-        {
-          name: "Абонентський термінал XPON",
-          category: "PON",
-          img: "",
-          rating: 3,
-          price: 600,
-          Info: "",
-        },
-        {
-          name: "Кабель вита пара",
-          category: "Кабель",
-          img: "",
-          rating: 3,
-          price: 700,
-          Info: "",
+          Info: `<div class="spec"><span class="spec-title">Тип:</span><span class="spec-value">Гігабітний бездротовий маршрутизатор дводіапазонний</span></div>`,
         },
       ],
     };
@@ -190,8 +168,8 @@ export default {
     otherItems() {
       return [
         { to: "/promotions", icon: "mdi-bullhorn-outline", label: this.$t('menu.promo') },
+        { to: "/payment-methods", icon: "mdi-credit-card-outline", label: this.$t('menu.payment') },
         { to: "/blog", icon: "mdi-newspaper-variant-outline", label: this.$t('menu.news') },
-        { to: "/about", icon: "mdi-script-text-outline", label: this.$t('menu.about-company') },
         { to: "/contact", icon: "mdi-contacts-outline", label: this.$t('menu.contact') },
       ];
     },
@@ -204,28 +182,6 @@ export default {
   padding: 16px;
 }
 
-.section-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 16px;
-  position: relative;
-}
-
-.section-title::after {
-  content: "";
-  display: block;
-  width: 50px;
-  height: 2px;
-  /* background: linear-gradient(90deg, #49CBD6, #26A69A); */
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 6px auto 0;
-  border-radius: 1px;
-}
-
 .tiles-row {
   margin: 0 -6px;
 }
@@ -234,7 +190,6 @@ export default {
 .menu-tile {
   height: 100%;
   padding: 16px 8px;
-  /* background: linear-gradient(135deg, #49CBD6, #26A69A); */
   background: linear-gradient(135deg, #fed100, #feb700);
   border: none;
   cursor: pointer;
@@ -280,11 +235,6 @@ export default {
 
 /* Адаптив */
 @media (max-width: 600px) {
-  .section-title {
-    font-size: 1.05rem;
-    margin-bottom: 12px;
-  }
-
   .menu-tile {
     padding: 14px 6px;
   }

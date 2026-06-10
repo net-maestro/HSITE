@@ -1,7 +1,7 @@
 <!-- LoyaltyProgram.vue -->
 <template>
   <div class="loyalty-section">
-    <h2 class="section-title">
+    <h2 class="hl-section-title">
       {{ $t('loyalty.title') }}
     </h2>
 
@@ -134,26 +134,9 @@ This promotion is not applied automatically and cannot be combined with other of
   padding: 40px 0;
 }
 
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 40px;
-  position: relative;
-}
 
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 12px auto 0;
-  border-radius: 2px;
-}
+
+
 
 .loyalty-card {
   position: relative;
@@ -214,10 +197,7 @@ This promotion is not applied automatically and cannot be combined with other of
 
 /* Адаптив */
 @media (max-width: 600px) {
-  .section-title {
-    font-size: 1.25rem;
-    margin-bottom: 24px;
-  }
+  
 
   .loyalty-card {
     padding: 16px !important;

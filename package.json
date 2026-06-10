@@ -17,6 +17,7 @@
     "dotenv": "^16.4.5",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
+    "pinia": "^3.0.4",
     "roboto-fontface": "*",
     "swiper": "^12.0.1",
     "toastr": "^2.1.4",

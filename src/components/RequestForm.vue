@@ -16,10 +16,7 @@
 
       <template v-slot:default="{ isActive }">
         <v-form ref="form" v-model="valid" @submit.prevent="submit(isActive)">
-          <v-card class="request-form-card card-hover card-animate" elevation="0" rounded="xl">
-            <!-- Акцентная полоса слева -->
-            <div class="accent-bar"></div>
-
+          <v-card class="request-form-card card-hover card-animate" elevation="0">
             <v-card-title class="title-section">
               <v-img
                 max-height="80"
@@ -83,10 +80,12 @@
 
             <v-card-actions class="justify-center pb-6">
               <v-btn
-                color="primary"
+                color="secondary"
+                class="text-black font-weight-bold px-12"
                 type="submit"
                 size="large"
-                rounded="lg"
+                rounded="pill"
+                variant="flat"
                 :disabled="!valid"
               >
                 {{ $t('request-form.send') }}
@@ -168,21 +167,11 @@ export default {
 .request-form-card {
   position: relative;
   background: #ffffff;
-  border: 1px solid #f0f0f0;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 28px !important;
   overflow: hidden;
-  padding: 32px;
-}
-
-/* Акцентная полоса слева — как в Blog.vue */
-.accent-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
 }
 
 .title-section {

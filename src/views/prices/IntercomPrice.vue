@@ -1,12 +1,14 @@
-<!-- Intercom.vue -->
 <template>
-  <div class="intercom-section">
-    <h2 class="section-title">
-      {{ $t("menu.intercom") }}
-    </h2>
-
+  <div class="intercom-section bg-grey-lighten-4 py-12">
     <v-container>
-      <v-row justify="center" class="g-4">
+      <div class="text-center mb-12">
+        <h2 class="hl-section-title">
+          {{ $t("menu.intercom") }}
+        </h2>
+        <p class="text-body-1 text-grey-darken-1 mt-4">Безпека та комфорт вашої оселі</p>
+      </div>
+
+      <v-row justify="center" class="g-4 align-stretch">
         <!-- Карточки тарифов -->
         <v-col
           v-for="(service, index) in intercomTariffs"
@@ -14,155 +16,147 @@
           cols="12"
           sm="6"
           md="4"
-          lg="3"
-          :data-aos="animated ? 'fade-up' : null"
-          :data-aos-delay="index * 100"
+          class="d-flex"
         >
-          <div
-            class="tariff-card card-hover pa-6 card-animate"
-            style="min-height: 420px; display: flex; flex-direction: column;"
-          >
-            <!-- Акцентная полоса -->
-            <div class="accent-bar" :class="getTariffStyle(service).accent"></div>
-
-            <!-- Заголовок с иконкой -->
-            <div class="text-center mb-1">
-              <v-icon
-                :icon="service.icon"
-                :size="36"
-                :color="getTariffStyle(service).iconColor"
-                class="me-1"
-              ></v-icon>
-              <h3 class="tariff-title text-h5 font-weight-bold">
+          <v-card class="hl-card tariff-card pa-6 pa-md-8 w-100 d-flex flex-column" rounded="xl" elevation="0">
+            <!-- Декоративний фон для іконки -->
+            <div class="icon-bg" :style="{ background: service.gradient }"></div>
+            
+            <div class="text-center position-relative mb-6">
+              <div class="icon-wrapper mx-auto mb-4 d-flex align-center justify-center rounded-circle" :style="{ background: 'white', boxShadow: '0 8px 20px rgba(0,0,0,0.08)', width: '80px', height: '80px' }">
+                <v-icon :icon="service.icon" size="40" :color="service.color"></v-icon>
+              </div>
+              <h3 class="text-h5 font-weight-bold mb-1">
                 <span v-if="service.name === 'audio'">{{ $t("intercom.intercom") }}</span>
                 <span v-else>{{ $t("intercom.video-intercom") }}</span>
               </h3>
+              <v-chip size="small" :color="service.color" variant="tonal" class="font-weight-bold">
+                {{ service.badge }}
+              </v-chip>
             </div>
 
-            <div class="divider mb-2"></div>
+            <!-- Опції -->
+            <div class="options-container flex-grow-1">
+              <!-- Підписка -->
+              <div class="option-item pa-3 mb-3 rounded-lg d-flex align-center justify-space-between">
+                <div class="d-flex align-center">
+                  <v-switch
+                    v-model="service.includeSubscription"
+                    :color="service.color"
+                    hide-details
+                    density="compact"
+                    class="mr-3 custom-switch"
+                  ></v-switch>
+                  <span class="font-weight-medium">{{ $t('intercom.subscription') }}</span>
+                </div>
+                <span class="font-weight-bold" :style="{ color: service.color }">{{ service.subscription }} ₴/{{ $t('prices.month') }}</span>
+              </div>
 
-            <!-- Подписка -->
-            <div class="option-section mb-1 py-2 px-3 rounded" style="background-color: #f9f9f9;">
-              <label class="switch-label">
-                <input
-                  type="checkbox"
-                  v-model="service.includeSubscription"
-                  class="switch-input"
-                />
-                <span class="switch-slider"></span>
-                {{ $t('intercom.subscription') }}
-                <span class="price-additional">({{ service.subscription }} ₴/{{ $t('prices.month') }})</span>
-              </label>
-            </div>
+              <!-- Підключення -->
+              <div class="option-item pa-3 mb-3 rounded-lg d-flex align-center justify-space-between">
+                <div class="d-flex align-center">
+                  <v-switch
+                    v-model="service.includeConnection"
+                    :color="service.color"
+                    hide-details
+                    density="compact"
+                    class="mr-3 custom-switch"
+                  ></v-switch>
+                  <span class="font-weight-medium">{{ $t('intercom.connection-cost') }}</span>
+                </div>
+                <span class="font-weight-bold text-grey-darken-1">{{ service.connectionCost }} ₴</span>
+              </div>
 
-            <!-- Подключение -->
-            <div class="option-section mb-1 py-2 px-3 rounded" style="background-color: #f9f9f9;">
-              <label class="switch-label">
-                <input
-                  type="checkbox"
-                  v-model="service.includeConnection"
-                  class="switch-input"
-                />
-                <span class="switch-slider"></span>
-                {{ $t('intercom.connection-cost') }}
-                <span class="price-additional">({{ service.connectionCost }} ₴)</span>
-              </label>
-            </div>
-
-            <!-- Ключ -->
-            <div class="option-section mb-1 py-2 px-3 rounded" style="background-color: #f9f9f9;">
-              <label class="switch-label">
-                <input
-                  type="checkbox"
-                  v-model="service.includeKey"
-                  class="switch-input"
-                />
-                <span class="switch-slider"></span>
-                {{ $t('intercom.order-key') }}
-                <span class="price-additional" v-if="service.includeKey">
-                  ({{ service.keyCount }} × {{ service.keyCost }} ₴)
-                </span>
-              </label>
-
-              <!-- Выбор количества ключей -->
-              <div v-if="service.includeKey" class="key-selector mt-2 d-flex align-center justify-center">
-                <button
-                  class="key-btn"
-                  @click="decreaseKeyCount(service)"
-                  :disabled="service.keyCount <= 1"
-                >
-                  −
-                </button>
-                <span class="key-count mx-3 font-weight-bold">{{ service.keyCount }}</span>
-                <button
-                  class="key-btn"
-                  @click="increaseKeyCount(service)"
-                >
-                  +
-                </button>
+              <!-- Ключі -->
+              <div class="option-item pa-3 mb-4 rounded-lg flex-column align-stretch">
+                <div class="d-flex align-center justify-space-between mb-2">
+                  <div class="d-flex align-center">
+                    <v-switch
+                      v-model="service.includeKey"
+                      :color="service.color"
+                      hide-details
+                      density="compact"
+                      class="mr-3 custom-switch"
+                    ></v-switch>
+                    <span class="font-weight-medium">{{ $t('intercom.order-key') }}</span>
+                  </div>
+                  <span v-if="service.includeKey" class="font-weight-bold text-grey-darken-1">
+                    {{ service.keyCount * service.keyCost }} ₴
+                  </span>
+                </div>
+                
+                <v-expand-transition>
+                  <div v-if="service.includeKey" class="d-flex align-center justify-center mt-2 bg-white rounded-pill pa-1 mx-auto" style="width: 140px; border: 1px solid #eee;">
+                    <v-btn icon="mdi-minus" size="x-small" variant="text" :disabled="service.keyCount <= 1" @click="decreaseKeyCount(service)"></v-btn>
+                    <span class="mx-3 font-weight-bold">{{ service.keyCount }}</span>
+                    <v-btn icon="mdi-plus" size="x-small" variant="text" @click="increaseKeyCount(service)"></v-btn>
+                  </div>
+                </v-expand-transition>
               </div>
             </div>
 
-            <!-- Итоговая цена -->
-            <div
-              v-if="calculateTotal(service) > 0"
-              class="total-price-alert text-subtitle-1 font-weight-bold text-center py-2 rounded"
-              :style="{ 
-                backgroundColor: '#f8f9fa',
-                borderLeftColor: getTariffStyle(service).iconColor 
-              }"
-            >
-              {{ $t("prices.total") }}: {{ calculateTotal(service) }} ₴
-            </div>
-
-            <!-- Кнопка заказа -->
-            <v-card-actions class="justify-center pt-1 mt-auto">
+            <!-- Итоговая цена и Кнопка -->
+            <div class="mt-4 pt-4 border-top">
+              <div class="d-flex justify-space-between align-center mb-4">
+                <span class="text-body-1 text-grey-darken-1">{{ $t("prices.total") }}:</span>
+                <span class="text-h5 font-weight-black" :style="{ color: service.color }">
+                  {{ calculateTotal(service) }} ₴
+                </span>
+              </div>
+              
               <RequestForm
                 :FormData="getFormData(service)"
                 :ButtonTitle="$t('prices.to-buy')"
-                :ButtonColor="'#2c3e50'"
-                :ButtonIcon="'mdi-cart-outline'"
+                :ButtonColor="service.color"
+                ButtonIcon="mdi-cart-outline"
               />
-            </v-card-actions>
-          </div>
+            </div>
+          </v-card>
         </v-col>
 
         <!-- Информационная карточка -->
-        <v-col cols="12" md="6" lg="4">
-          <div
-            class="tariff-card card-hover pa-6 card-animate info-card"
-            style="min-height: 420px; display: flex; flex-direction: column;"
-          >
-            <!-- Акцентная полоса -->
-            <div class="accent-bar accent-info"></div>
-
-            <!-- Заголовок -->
-            <div class="text-center mb-1">
-              <v-icon
-                icon="mdi-information-outline"
-                size="36"
-                color="#6A1B9A"
-                class="me-1"
-              ></v-icon>
-              <h3 class="tariff-title text-h5 font-weight-bold">
-                {{ $t("intercom.intercom-service") }}
+        <v-col cols="12" md="4" class="d-flex">
+          <v-card class="hl-card pa-6 pa-md-8 w-100 d-flex flex-column text-white" rounded="xl" elevation="0" style="background: linear-gradient(135deg, #1A237E 0%, #3949AB 100%);">
+            <div class="mb-6">
+              <v-icon icon="mdi-shield-home" size="48" color="amber-lighten-2" class="mb-4"></v-icon>
+              <h3 class="text-h5 font-weight-bold mb-2 text-white">
+                Що входить у підключення?
               </h3>
+              <p class="text-white-50 text-body-2">
+                {{ $t("intercom.cost-of-connection") }}
+              </p>
             </div>
 
-            <div class="divider mb-2"></div>
-
-            <!-- Описание -->
-            <p class="text-body-1 text-center mb-4">
-              {{ $t("intercom.cost-of-connection") }}
-            </p>
-
-            <!-- Список услуг -->
-            <ul class="info-list mt-auto">
-              <li class="info-item">• {{ $t('intercom.installation') }}</li>
-              <li class="info-item">• {{ $t('intercom.setup') }}</li>
-              <li class="info-item">• {{ $t('intercom.instruction') }}</li>
-            </ul>
-          </div>
+            <div class="info-list flex-grow-1">
+              <div class="info-item d-flex align-start mb-4">
+                <v-icon icon="mdi-check-circle" color="amber-lighten-2" class="mr-3 mt-1"></v-icon>
+                <div>
+                  <div class="font-weight-bold text-white mb-1">{{ $t('intercom.installation') }}</div>
+                  <div class="text-white-50 text-caption">Монтаж обладнання у вашій оселі</div>
+                </div>
+              </div>
+              <div class="info-item d-flex align-start mb-4">
+                <v-icon icon="mdi-check-circle" color="amber-lighten-2" class="mr-3 mt-1"></v-icon>
+                <div>
+                  <div class="font-weight-bold text-white mb-1">{{ $t('intercom.setup') }}</div>
+                  <div class="text-white-50 text-caption">Налаштування зв'язку з панеллю виклику</div>
+                </div>
+              </div>
+              <div class="info-item d-flex align-start">
+                <v-icon icon="mdi-check-circle" color="amber-lighten-2" class="mr-3 mt-1"></v-icon>
+                <div>
+                  <div class="font-weight-bold text-white mb-1">{{ $t('intercom.instruction') }}</div>
+                  <div class="text-white-50 text-caption">Демонстрація роботи та навчання</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mt-6 pt-4 border-top-white-10">
+              <v-btn variant="outlined" color="white" rounded="pill" block class="font-weight-bold" href="/about">
+                Дізнатися більше
+              </v-btn>
+            </div>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -175,27 +169,11 @@ import RequestForm from '@/components/RequestForm.vue';
 export default {
   name: "Intercom",
   components: { RequestForm },
-  props: {
-    animated: { type: Boolean, default: true },
-  },
   data() {
     return {
-      // Стили по уровням — как в обновлённых интернет-тарифах
-      tariffStyles: {
-        standard: {
-          accent: 'accent-standard',
-          iconColor: '#2e7d32', // тёмно-зелёный
-        },
-        premium: {
-          accent: 'accent-premium',
-          iconColor: '#b38800', // тёмно-золотой
-        }
-      },
-
       intercomTariffs: [
         {
           name: "audio",
-          level: "standard",
           subscription: 60,
           keyCost: 120,
           connectionCost: 600,
@@ -203,11 +181,13 @@ export default {
           includeSubscription: true,
           includeKey: false,
           includeConnection: false,
-          icon: "mdi-doorbell",
+          icon: "mdi-phone-classic",
+          color: '#2e7d32',
+          gradient: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)',
+          badge: 'Класика'
         },
         {
           name: "video",
-          level: "premium",
           subscription: 75,
           keyCost: 120,
           connectionCost: 1450,
@@ -215,16 +195,15 @@ export default {
           includeSubscription: true,
           includeKey: false,
           includeConnection: false,
-          icon: "mdi-doorbell-video",
+          icon: "mdi-video-outline",
+          color: '#1565c0',
+          gradient: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
+          badge: 'Преміум'
         },
       ],
     };
   },
   methods: {
-    getTariffStyle(service) {
-      return this.tariffStyles[service.level] || this.tariffStyles.standard;
-    },
-
     calculateTotal(service) {
       const subscriptionCost = service.includeSubscription ? service.subscription : 0;
       const keyCost = service.includeKey ? service.keyCost * service.keyCount : 0;
@@ -264,238 +243,56 @@ export default {
 </script>
 
 <style scoped>
-.intercom-section {
-  padding: 40px 0;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 40px;
-  position: relative;
-}
-
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 12px auto 0;
-  border-radius: 2px;
-}
-
 .tariff-card {
   position: relative;
-  background: #ffffff;
-  border: 1px solid #f0f0f0;
-  border-radius: 12px;
-  padding: 16px;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.04);
-  display: flex;
-  flex-direction: column;
-  min-height: 420px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .tariff-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08) !important;
 }
 
-/* Акцентные полосы */
-.accent-bar {
+.icon-bg {
   position: absolute;
   top: 0;
   left: 0;
-  width: 4px;
-  height: 100%;
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
+  width: 100%;
+  height: 120px;
+  opacity: 0.5;
+  border-bottom-left-radius: 50% 20px;
+  border-bottom-right-radius: 50% 20px;
 }
 
-.accent-standard {
-  background: linear-gradient(to bottom, #4caf50, #2e7d32);
+.icon-wrapper {
+  z-index: 1;
 }
 
-.accent-premium {
-  background: linear-gradient(135deg, #fed100, #feb700);
+.option-item {
+  background-color: #f8f9fa;
+  border: 1px solid #f0f0f0;
+  transition: background-color 0.2s ease;
 }
 
-.accent-info {
-  background: linear-gradient(to bottom, #9C27B0, #6A1B9A);
+.option-item:hover {
+  background-color: #f1f3f5;
 }
 
-.tariff-title {
-  color: #2c3e50;
-  line-height: 1.3;
-  margin: 8px 0 4px 0;
-  font-size: 1.3rem;
+.custom-switch {
+  transform: scale(0.9);
+  margin-top: 0;
 }
 
-.divider {
-  border: none;
+.border-top {
   border-top: 1px solid #eee;
 }
 
-.option-section {
-  transition: all 0.2s ease;
-  border-radius: 6px;
+.border-top-white-10 {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.option-section:hover {
-  background: #f0f0f0;
-}
-
-.switch-label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  gap: 8px;
-  font-weight: 500;
-  font-size: 0.875rem;
-  flex-wrap: wrap;
-}
-
-.switch-input {
-  display: none;
-}
-
-.switch-slider {
-  width: 36px;
-  height: 18px;
-  background-color: #ccc;
-  border-radius: 9px;
-  position: relative;
-  transition: 0.3s;
-}
-
-.switch-slider::before {
-  content: '';
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background-color: white;
-  top: 1px;
-  left: 1px;
-  transition: 0.3s;
-}
-
-.switch-input:checked + .switch-slider {
-  background-color: #fed100;
-}
-
-.switch-input:checked + .switch-slider::before {
-  transform: translateX(18px);
-}
-
-.price-additional {
-  color: #e91e63;
-  font-weight: 500;
-  margin-left: 6px;
-}
-
-.key-selector {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.key-btn {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  background: white;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.key-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: #f5f5f5;
-}
-
-.key-btn:hover:not(:disabled) {
-  background: #f0f0f0;
-}
-
-.key-count {
-  font-size: 1.1rem;
-  min-width: 24px;
-  text-align: center;
-}
-
-.total-price-alert {
-  background-color: #f8f9fa;
-  border-left: 4px solid transparent;
-  margin-top: auto;
-  margin-bottom: 12px;
-  font-size: 1rem;
-}
-
-/* Стиль информационной карточки */
-.info-card {
-  background: #fafafa;
-}
-
-.info-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
-
-.info-item {
-  padding: 6px 0;
-  color: #424242;
-  font-size: 0.9rem;
-}
-
-/* Адаптив под мобильные */
-@media (max-width: 600px) {
-  .section-title {
-    font-size: 1.25rem;
-    margin-bottom: 24px;
-  }
-
-  .tariff-card {
-    padding: 12px;
-    min-height: auto;
-  }
-
-  .tariff-title {
-    font-size: 1.1rem;
-  }
-
-  .switch-label {
-    font-size: 0.8rem;
-  }
-
-  .key-btn {
-    width: 26px;
-    height: 26px;
-    font-size: 0.9rem;
-  }
-
-  .key-count {
-    font-size: 1rem;
-  }
-
-  .info-item {
-    font-size: 0.85rem;
-  }
+.text-white-50 {
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 </style>

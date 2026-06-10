@@ -12,10 +12,21 @@
       <ScrollButton />
       <Footer />
       <PreloaderLink2 />
+      <CartDrawer />
     </v-main>
   </v-app>
 </template>
 
+<script setup>
+import { onMounted } from 'vue'
+import { useCartStore } from '@/store/cart'
+
+const cartStore = useCartStore()
+
+onMounted(() => {
+  cartStore.loadFromStorage()
+})
+</script>
 
 <style>
 

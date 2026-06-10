@@ -1,7 +1,7 @@
 <!-- Faq.vue -->
 <template>
   <div class="faq-section">
-    <h2 class="section-title">
+    <h2 class="hl-section-title">
       {{ $t('faq.title') }}
     </h2>
 
@@ -17,16 +17,18 @@
             <v-expansion-panel
               v-for="(item, index) in faqItems"
               :key="item.key"
-              class="faq-panel card-hover card-animate"
+              class="faq-panel card-hover card-animate mb-4"
               :data-aos="animated ? 'fade-up' : null"
               :data-aos-delay="index * 100"
             >
-              <!-- Акцентная полоса слева -->
-              <div class="accent-bar"></div>
-
-              <v-expansion-panel-title class="faq-title">
+              <v-expansion-panel-title class="faq-title" expand-icon="">
                 <template v-slot:default="{ expanded }">
-                  <span class="question-text">{{ item.question }}</span>
+                  <div class="d-flex justify-space-between align-center w-100">
+                    <span class="question-text">{{ item.question }}</span>
+                    <v-icon :class="{ 'icon-rotated': expanded }" color="secondary" size="large">
+                      mdi-plus
+                    </v-icon>
+                  </div>
                 </template>
               </v-expansion-panel-title>
 
@@ -78,26 +80,9 @@ export default {
 }
 
 /* Заголовок секции — как в Blog.vue */
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 40px;
-  position: relative;
-}
 
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 12px auto 0;
-  border-radius: 2px;
-}
+
+
 
 /* Панели */
 .faq-panels {
@@ -107,36 +92,25 @@ export default {
 .faq-panel {
   position: relative;
   background: #ffffff;
-  border: 1px solid #f0f0f0;
-  border-radius: 16px !important;
+  border: 1px solid rgba(0,0,0,0.04);
+  border-radius: 24px !important;
   overflow: hidden;
-  margin-bottom: 16px;
-  transition: all 0.3s ease;
+  margin-bottom: 24px !important;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03) !important;
 }
 
 .faq-panel:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-/* Акцентная полоса слева — как в Blog.vue */
-.accent-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.06) !important;
 }
 
 /* Заголовок вопроса */
 .faq-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #2c3e50;
-  padding: 18px 24px 18px 32px !important; /* отступ слева больше из-за accent-bar */
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1e293b;
+  padding: 24px 32px !important;
   background: transparent;
 }
 
@@ -144,21 +118,28 @@ export default {
   opacity: 0;
 }
 
+.question-text {
+  flex-grow: 1;
+  padding-right: 16px;
+}
+
+.icon-rotated {
+  transform: rotate(45deg);
+  color: #e91e63 !important;
+}
+
 /* Ответ */
 .faq-answer {
-  padding: 0 24px 20px 32px !important;
-  font-size: 0.95rem;
+  padding: 0 32px 24px 32px !important;
+  font-size: 1rem;
   line-height: 1.7;
-  color: #424242;
+  color: #475569;
   background: transparent;
 }
 
 /* Адаптив */
 @media (max-width: 600px) {
-  .section-title {
-    font-size: 1.25rem;
-    margin-bottom: 24px;
-  }
+  
 
   .faq-title {
     font-size: 1rem;

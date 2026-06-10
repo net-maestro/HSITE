@@ -26,6 +26,7 @@ const routes = [
 
   { path: "/surveillance", name: "Відеонагляд", component: () => import("@/views/Surveillance.vue") },
   { path: "/sitemap", name: "Сайт-мап", component: () => import("@/views/Sitemap.vue") },
+  { path: "/checkout", name: "Оформлення замовлення", component: () => import("@/views/Checkout.vue") },
   { path: "/:catchAll(.*)", name: "404", component: () => import("@/views/PageNotFound.vue") },
 ];
 
@@ -36,6 +37,15 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   store.previousRoute = from;
+  
+  // SEO: Update document title dynamically based on route name or meta title
+  const pageTitle = to.meta.title || to.name || 'Хеппілінк';
+  if (to.path === '/') {
+    document.title = 'Хеппілінк - Інтернет для дому та бізнесу | HappyLink';
+  } else {
+    document.title = `${pageTitle} | HappyLink`;
+  }
+  
   next();
 });
 

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div class="tariffs-section">
-      <h2 class="section-title" >
+      <h2 class="hl-section-title" >
         {{ $t("menu.internet") }}
       </h2>
 
@@ -427,26 +427,9 @@ export default {
   max-height: 750px;
 }
 
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 20px;
-  position: relative;
-}
 
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 10px auto 0;
-  border-radius: 2px;
-}
+
+
 
 .tariff-switcher {
   display: flex;

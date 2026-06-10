@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div class="tariffs-section">
-      <h2 class="section-title">
+      <h2 class="hl-section-title">
         {{ $t("menu.internet") }}
       </h2>
 
@@ -59,6 +59,7 @@
           >
             <!-- Акцентная полоса -->
             <div class="accent-bar" :class="getTariffStyle(tariff).accent"></div>
+
 
             <!-- Заголовок с иконкой -->
             <div class="text-center mb-1">
@@ -199,6 +200,18 @@
           </div>
         </swiper-slide>
       </swiper>
+
+      <!-- Таблиця порівняння тарифів -->
+      <div class="mt-12">
+        <h3 class="text-center text-h5 font-weight-bold mb-6 text-uppercase text-grey-darken-2">
+          Детальне порівняння тарифів
+        </h3>
+        <TariffComparisonTable 
+          v-if="tablePlans.length > 0"
+          :plans="tablePlans"
+          @select="handleTableSelect"
+        />
+      </div>
     </div>
   </v-container>
 </template>
@@ -209,10 +222,11 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import RequestForm from '@/components/RequestForm.vue'
+import TariffComparisonTable from '@/components/prices/TariffComparisonTable.vue'
 
 export default {
   name: "TestPrice",
-  components: { Swiper, SwiperSlide, RequestForm },
+  components: { Swiper, SwiperSlide, RequestForm, TariffComparisonTable },
 
   data() {
     return {
@@ -396,6 +410,23 @@ export default {
   computed: {
     filteredTariffs() {
       return this.internetTariffs.filter(tariff => tariff.type === this.activeType)
+    },
+    tablePlans() {
+      return this.filteredTariffs.map(t => ({
+        id: t.id,
+        name: t.name,
+        price: t.price,
+        icon: t.icon,
+        color: this.getTariffStyle(t).iconColor,
+        popular: t.level === 'standard',
+        features: {
+          speed: t.speed + ' Мбіт/с',
+          tech: t.connectionTypes ? t.connectionTypes.join(', ') : '',
+          iptv: t.iptv,
+          ip: t.externalIpPrice === 0 ? 'Безкоштовно' : (t.externalIpEnabled ? 'Платна опція' : false),
+          support: t.level === 'premium' || t.level === 'photon' ? '24/7 VIP' : 'Стандартна'
+        }
+      }))
     }
   },
 
@@ -408,6 +439,12 @@ export default {
   },
 
   methods: {
+    handleTableSelect(plan) {
+      console.log('Selected plan from table:', plan.name)
+      // Скролимо до слайдера тарифів
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+
     selectIptvTariff(tariff) {
       this.selectedIptvTariff = tariff
     },
@@ -466,26 +503,9 @@ export default {
   max-height: 750px;
 }
 
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 20px;
-  position: relative;
-}
 
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 10px auto 0;
-  border-radius: 2px;
-}
+
+
 
 /* Стили для переключателя тарифов (в стиле category-toggle) */
 .category-toggle {

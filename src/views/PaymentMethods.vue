@@ -1,62 +1,71 @@
 <!-- PaymentMethods.vue -->
 <template>
-  <div class="payment-section">
-    <h2 class="section-title">
-      {{ $t('menu.payment') }}
-    </h2>
-
+  <div class="payment-section bg-grey-lighten-4 py-12">
     <v-container>
-      <v-row class="justify-center">
+      <div class="text-center mb-12">
+        <h2 class="hl-section-title">
+          {{ $t('menu.payment') }}
+        </h2>
+        <p class="text-body-1 text-grey-darken-1 mt-4">Оберіть найзручніший для вас спосіб оплати</p>
+      </div>
+
+      <v-row class="justify-center g-4">
         <v-col
-          v-for="(paymentMethod, index) in localizedPaymentMethods"
+          v-for="(method, index) in localizedPaymentMethods"
           :key="index"
           cols="12"
           sm="6"
           md="4"
           lg="3"
-          :data-aos="animated ? 'fade-up' : null"
-          :data-aos-delay="index * 100"
+          class="d-flex"
+          @mouseenter="hoveredCard = index"
+          @mouseleave="hoveredCard = null"
         >
           <v-card
-            :href="paymentMethod.link"
+            :href="method.link"
             target="_blank"
-            class="payment-card card-hover pa-6 text-center card-animate"
+            class="payment-card hl-card pa-6 text-center w-100 d-flex flex-column align-center justify-space-between"
             elevation="0"
             rounded="xl"
           >
-            <!-- Акцентная полоса слева -->
-            <div class="accent-bar"></div>
+            <!-- Фоновий градієнт для ховеру -->
+            <div class="hover-bg" :style="{ background: method.gradient }"></div>
 
-            <!-- Изображение -->
-            <v-img
-              :src="paymentMethod.image"
-              :alt="paymentMethod.title"
-              :height="paymentMethod.height || 120"
-              :max-height="paymentMethod.height || 120"
-              contain
-              class="payment-image rounded-lg mb-4"
-            />
+            <div class="content-wrapper">
+              <!-- Іконка / Логотип -->
+              <div class="img-container mb-4">
+                <v-img
+                  :src="method.image"
+                  :alt="method.title"
+                  height="80"
+                  contain
+                  class="payment-image"
+                />
+              </div>
 
-            <!-- Заголовок -->
-            <h3 class="payment-title text-h6 font-weight-bold mb-2">
-              {{ paymentMethod.title }}
-              <v-icon
-                icon="mdi-arrow-right"
-                size="small"
-                class="ml-1"
-                color="#26A69A"
-              ></v-icon>
-            </h3>
+              <!-- Заголовок -->
+              <h3 class="payment-title text-h6 font-weight-bold mb-3 d-flex align-center justify-center">
+                {{ method.title }}
+              </h3>
 
-            <!-- Описание -->
-            <div v-if="paymentMethod.description" class="payment-description text-body-2">
-              <v-icon
-                icon="mdi-apps"
-                size="small"
-                color="primary"
-                class="me-1"
-              ></v-icon>
-              {{ paymentMethod.description }}
+              <!-- Опис -->
+              <p v-if="method.description" class="text-body-2 text-grey-darken-1 mb-4 px-2">
+                {{ method.description }}
+              </p>
+            </div>
+
+            <!-- Кнопка -->
+            <div class="mt-auto w-100">
+              <v-btn
+                :variant="hoveredCard === index ? 'flat' : 'outlined'"
+                :color="method.btnColor"
+                rounded="pill"
+                class="w-100 font-weight-bold action-btn"
+                :class="hoveredCard === index ? 'text-white' : ''"
+                append-icon="mdi-arrow-right"
+              >
+                Оплатити
+              </v-btn>
             </div>
           </v-card>
         </v-col>
@@ -68,69 +77,75 @@
 <script>
 export default {
   name: "PaymentMethods",
-  props: {
-    animated: { type: Boolean, default: true },
-  },
   data() {
     return {
+      hoveredCard: null,
       paymentMethods_ua: [
         {
-          height: 200,
-          title: 'Оплата по QR коду',
+          title: 'QR код Приват24',
           link: 'https://privatbank.ua/apps',
           image: 'http://happylink.net.ua/static/payment-methods/Privat24_QR_Code.png',
-          description: ''
+          description: 'Швидка оплата смартфоном через сканування QR-коду.',
+          gradient: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)',
+          btnColor: '#2e7d32'
         },
         {
-          height: 100,
-          title: 'Оплата ПриватБанк',
+          title: 'ПриватБанк',
           link: 'https://next.privat24.ua/payments/form/%7B%22token%22%3A%22b9b67f5b-1f2c-47c4-bb1f-be8d48609dc0%22%7D',
           image: 'http://happylink.net.ua/static/payment-methods/privatbank.png',
-          description: 'Оплатити послуги через термінал або Приват24'
+          description: 'Зручно оплатити через термінал або застосунок Приват24.',
+          gradient: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
+          btnColor: '#1565c0'
         },
         {
-          height: 100,
-          title: 'Оплата EasyPay',
+          title: 'EasyPay',
           link: 'https://easypay.ua/ru/catalog/internet/happylink',
           image: 'http://happylink.net.ua/static/payment-methods/easypay.png',
-          description: 'Використання терміналів EasyPay для оплати'
+          description: 'Оплата без комісії у мережі терміналів та на сайті EasyPay.',
+          gradient: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)',
+          btnColor: '#ef6c00'
         },
         {
-          height: 100,
-          title: 'Оплата City24',
+          title: 'City24',
           link: 'https://city24.ua/',
           image: 'http://happylink.net.ua/static/payment-methods/city24.png',
-          description: 'Внести оплату через мережу терміналів City24'
+          description: 'Внесення готівки через широку мережу терміналів City24.',
+          gradient: 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)',
+          btnColor: '#c62828'
         },
       ],
       paymentMethods_en: [
         {
-          height: 200,
-          title: 'Payment via QR Code',
+          title: 'Privat24 QR Code',
           link: 'https://privatbank.ua/apps',
           image: 'http://happylink.net.ua/static/payment-methods/Privat24_QR_Code.png',
-          description: ''
+          description: 'Quick payment using your smartphone to scan the QR code.',
+          gradient: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)',
+          btnColor: '#2e7d32'
         },
         {
-          height: 100,
-          title: 'Payment via PrivatBank',
+          title: 'PrivatBank',
           link: 'https://next.privat24.ua/payments/form/%7B%22token%22%3A%22b9b67f5b-1f2c-47c4-bb1f-be8d48609dc0%22%7D',
           image: 'http://happylink.net.ua/static/payment-methods/privatbank.png',
-          description: 'Pay for services via terminal or Privat24'
+          description: 'Convenient payment via terminal or Privat24 app.',
+          gradient: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
+          btnColor: '#1565c0'
         },
         {
-          height: 100,
-          title: 'Payment via EasyPay',
+          title: 'EasyPay',
           link: 'https://easypay.ua/ru/catalog/internet/happylink',
           image: 'http://happylink.net.ua/static/payment-methods/easypay.png',
-          description: 'Use EasyPay terminals for payment'
+          description: 'Commission-free payment at EasyPay terminals and website.',
+          gradient: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)',
+          btnColor: '#ef6c00'
         },
         {
-          height: 100,
-          title: 'Payment via City24',
+          title: 'City24',
           link: 'https://city24.ua/',
           image: 'http://happylink.net.ua/static/payment-methods/city24.png',
-          description: 'Make payments through the City24 terminal network'
+          description: 'Cash deposit through the wide network of City24 terminals.',
+          gradient: 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)',
+          btnColor: '#c62828'
         },
       ]
     };
@@ -144,102 +159,64 @@ export default {
 </script>
 
 <style scoped>
-.payment-section {
-  padding: 40px 0;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 40px;
-  position: relative;
-}
-
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  margin: 12px auto 0;
-  border-radius: 2px;
-}
-
 .payment-card {
   position: relative;
-  background: #ffffff;
-  border: 1px solid #f0f0f0;
-  transition: all 0.3s ease;
-  height: 100%;
+  overflow: hidden;
   text-decoration: none;
-  color: inherit;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  border: 1px solid rgba(0,0,0,0.04);
 }
 
 .payment-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important;
+  border-color: transparent;
 }
 
-/* Акцентная полоса слева */
-.accent-bar {
+.hover-bg {
   position: absolute;
   top: 0;
   left: 0;
-  width: 4px;
+  width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #fed100, #feb700);
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
 }
 
-.payment-image {
+.payment-card:hover .hover-bg {
+  opacity: 0.6;
+}
+
+.content-wrapper, .action-btn {
+  position: relative;
+  z-index: 1;
+}
+
+.img-container {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
   transition: transform 0.3s ease;
-  border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.payment-image:hover {
-  transform: scale(1.03);
+.payment-card:hover .img-container {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.action-btn {
+  transition: all 0.3s ease;
+  background: white;
 }
 
 .payment-title {
   color: #2c3e50;
-  line-height: 1.3;
-}
-
-.payment-description {
-  color: #424242;
-  line-height: 1.5;
-  margin-top: 8px;
-}
-
-/* Адаптив */
-@media (max-width: 600px) {
-  .section-title {
-    font-size: 1.25rem;
-    margin-bottom: 24px;
-  }
-
-  .payment-card {
-    padding: 16px !important;
-  }
-
-  .payment-title {
-    font-size: 1.1rem;
-  }
-
-  .payment-description {
-    font-size: 0.9rem;
-  }
-
-  /* QR-код на мобильных — не слишком большой */
-  .payment-image {
-    max-height: 160px !important;
-    height: auto !important;
-  }
+  font-size: 1.15rem;
 }
 </style>
