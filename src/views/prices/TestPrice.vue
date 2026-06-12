@@ -198,17 +198,77 @@
         </swiper-slide>
       </swiper>
 
-      <!-- Таблиця порівняння тарифів -->
-      <div class="mt-12">
-        <h3 class="text-center text-h5 font-weight-bold mb-6 text-uppercase text-grey-darken-2">
-          Детальне порівняння тарифів
-        </h3>
-        <TariffComparisonTable 
-          v-if="tablePlans.length > 0"
-          :plans="tablePlans"
-          @select="handleTableSelect"
-        />
-      </div>
+      <v-row justify="center" class="mt-6 mb-8">
+        <v-col cols="12" md="10">
+          <div class="rounded-xl overflow-hidden shadow-lg">
+            <v-img :src="homeBanner" cover height="400" class="align-end rounded-xl"></v-img>
+          </div>
+        </v-col>
+      </v-row>
+
+      <!-- Technologies Info Section -->
+      <v-row justify="center" class="mb-16">
+        <v-col cols="12" md="10">
+          <h2 class="text-h4 font-weight-bold text-center mb-8 text-slate-800">
+            Яку технологію підключення обрати?
+          </h2>
+          <v-row>
+            <!-- Ethernet -->
+            <v-col cols="12" md="4" class="d-flex">
+              <v-card class="pa-6 rounded-2xl border feature-info-card flex-grow-1" elevation="0">
+                <div class="mb-4">
+                  <v-icon icon="mdi-ethernet-cable" size="48" color="#64748b"></v-icon>
+                </div>
+                <h3 class="text-h5 font-weight-bold mb-3 text-slate-800">Ethernet (FTTB)</h3>
+                <p class="text-body-1 text-slate-600 mb-0">
+                  Класичне підключення по мідному кабелю (вита пара). Відмінно підходить для веб-серфінгу, соціальних мереж та перегляду відео. Забезпечує стабільну швидкість до <strong>1000 Мбіт/с</strong>.
+                </p>
+              </v-card>
+            </v-col>
+            
+            <!-- GPON -->
+            <v-col cols="12" md="4" class="d-flex">
+              <v-card class="pa-6 rounded-2xl border feature-info-card flex-grow-1" elevation="0">
+                <div class="mb-4">
+                  <v-icon icon="mdi-access-point-network" size="48" color="#10b981"></v-icon>
+                </div>
+                <h3 class="text-h5 font-weight-bold mb-3 text-slate-800">GPON (Оптика)</h3>
+                <p class="text-body-1 text-slate-600 mb-0">
+                  Сучасна <strong>енергонезалежна</strong> оптоволоконна мережа, яка заводиться прямо у вашу квартиру. Працює навіть при відключеннях світла (за наявності павербанка для роутера). Швидкість до <strong>1000 Мбіт/с</strong>.
+                </p>
+              </v-card>
+            </v-col>
+            
+            <!-- XG-PON -->
+            <v-col cols="12" md="4" class="d-flex">
+              <v-card class="pa-6 rounded-2xl border feature-info-card flex-grow-1" elevation="0">
+                <div class="mb-4">
+                  <v-icon icon="mdi-rocket-launch-outline" size="48" color="#fed100"></v-icon>
+                </div>
+                <h3 class="text-h5 font-weight-bold mb-3 text-slate-800">XG-PON</h3>
+                <p class="text-body-1 text-slate-600 mb-0">
+                  Технологія майбутнього для найвибагливіших користувачів. Швидкість до <strong>2500 Мбіт/с</strong> забезпечує колосальну пропускну здатність, якої з запасом вистачить для великих родин, розумного дому, завантаження об'ємних файлів та 4K стрімінгу на багатьох пристроях одночасно.
+                </p>
+              </v-card>
+            </v-col>
+          </v-row>
+
+          <v-alert
+            color="#f8fafc"
+            class="mt-8 rounded-2xl border px-6 py-5"
+            elevation="0"
+          >
+            <template v-slot:prepend>
+              <v-icon icon="mdi-lightbulb-on-outline" color="#fed100" size="32" class="mr-4"></v-icon>
+            </template>
+            <div class="text-body-1 text-slate-700">
+              <strong class="text-slate-800">Рекомендація провайдера:</strong> Для максимально стабільної роботи мережі під час можливих блекаутів ми радимо підключати тарифи на базі <strong>GPON</strong> або <strong>XG-PON</strong>. Оптика у квартирі захищена від перепадів напруги, не потребує проміжного обладнання в під'їзді та гарантує ідеальну якість сигналу.<br><br>
+              <strong>Зверніть увагу:</strong> для безперебійної роботи мережі без світла, живлення від вашого павербанка чи ДБЖ у квартирі має строго відповідати електричним характеристикам вашого роутера та оптичного термінала (вольти та ампери).
+            </div>
+          </v-alert>
+        </v-col>
+      </v-row>
+
     </div>
   </v-container>
 </template>
@@ -219,14 +279,15 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import RequestForm from '@/components/RequestForm.vue'
-import TariffComparisonTable from '@/components/prices/TariffComparisonTable.vue'
+import homeBanner from '@/assets/banners/home_internet.png'
 
 export default {
   name: "TestPrice",
-  components: { Swiper, SwiperSlide, RequestForm, TariffComparisonTable },
+  components: { Swiper, SwiperSlide, RequestForm },
 
   data() {
     return {
+      homeBanner,
       // Стили по уровням тарифов — только акценты и иконки
       tariffStyles: {
         economy: {
@@ -407,23 +468,6 @@ export default {
   computed: {
     filteredTariffs() {
       return this.internetTariffs.filter(tariff => tariff.type === this.activeType)
-    },
-    tablePlans() {
-      return this.filteredTariffs.map(t => ({
-        id: t.id,
-        name: t.name,
-        price: t.price,
-        icon: t.icon,
-        color: this.getTariffStyle(t).iconColor,
-        popular: t.level === 'standard',
-        features: {
-          speed: t.speed + ' Мбіт/с',
-          tech: t.connectionTypes ? t.connectionTypes.join(', ') : '',
-          iptv: t.iptv,
-          ip: t.externalIpPrice === 0 ? 'Безкоштовно' : (t.externalIpEnabled ? 'Платна опція' : false),
-          support: t.level === 'premium' || t.level === 'photon' ? '24/7 VIP' : 'Стандартна'
-        }
-      }))
     }
   },
 
@@ -436,11 +480,6 @@ export default {
   },
 
   methods: {
-    handleTableSelect(plan) {
-      console.log('Selected plan from table:', plan.name)
-      // Скролимо до слайдера тарифів
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    },
 
     selectIptvTariff(tariff) {
       this.selectedIptvTariff = tariff
@@ -654,6 +693,18 @@ export default {
   0% { transform: scale(1); }
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
+}
+
+.feature-info-card {
+  background: #ffffff;
+  transition: all 0.3s ease;
+  border-color: rgba(0,0,0,0.05) !important;
+}
+
+.feature-info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.1) !important;
 }
 
 .tariff-title {

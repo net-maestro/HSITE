@@ -18,6 +18,10 @@ menu:
   about-company: "About company"
   contact: "Contact"
   other: "Other"
+  business_internet: "Internet for business"
+  developers: "For developers"
+  office_networks: "Office networks (SCS)"
+  home: "Home"
 
 prices:
   month: "month"

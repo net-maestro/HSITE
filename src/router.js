@@ -18,6 +18,8 @@ const routes = [
   { path: "/coverage-map", name: "Карта покриття", component: () => import("@/views/ProviderCoverageMap.vue") },
   { path: "/promotions", name: "Акції", component: () => import("@/views/Promotions.vue") },
   { path: "/business", name: "Для бізнесу", component: () => import("@/views/prices/BusinessPrice.vue") },
+  { path: "/business/developers", name: "Для забудовників", component: () => import("@/views/services/Developers.vue") },
+  { path: "/business/office-networks", name: "Офісні мережі (СКС)", component: () => import("@/views/services/OfficeNetworks.vue") },
   {
   path: '/promo/:id',
   name: 'PromoDetail',

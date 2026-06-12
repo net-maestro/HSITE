@@ -18,6 +18,10 @@ menu:
   about-company: "Про компанію"
   contact: "Контакти"
   other: "Інше"
+  business_internet: "Інтернет для бізнесу"
+  developers: "Для забудовників"
+  office_networks: "Офісні мережі (СКС)"
+  home: "Для дому"
 
 prices:
   month: "місяць"

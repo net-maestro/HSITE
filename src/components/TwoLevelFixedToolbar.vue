@@ -87,7 +87,7 @@
         <div v-if="$vuetify.display.lgAndUp" class="d-flex align-center h-100">
           
           <!-- Dropdown: Послуги -->
-          <v-menu open-on-hover offset-y transition="slide-y-transition">
+          <v-menu v-model="menuStates.services" open-on-hover offset-y transition="slide-y-transition">
             <template v-slot:activator="{ props }">
               <v-btn 
                 v-bind="props" 
@@ -96,7 +96,7 @@
                 append-icon="mdi-chevron-down"
                 :class="{ 'active-group': isGroupActive(servicesGroup) }"
               >
-                {{ $t('menu.service') }}
+                {{ $t('menu.home') }}
               </v-btn>
             </template>
             <v-list elevation="3" class="rounded-lg mt-1 menu-dropdown">
@@ -107,6 +107,35 @@
                 :prepend-icon="item.icon"
                 class="hover-bg"
                 :class="{ 'active-menu-item': isActive(item.route) }"
+                @click="menuStates.services = false"
+              >
+                <v-list-item-title class="font-weight-medium">{{ $t(item.text) }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
+          <!-- Dropdown: Для бізнесу -->
+          <v-menu v-model="menuStates.business" open-on-hover offset-y transition="slide-y-transition">
+            <template v-slot:activator="{ props }">
+              <v-btn 
+                v-bind="props" 
+                variant="text" 
+                class="main-menu-btn text-none font-weight-medium mx-1" 
+                append-icon="mdi-chevron-down"
+                :class="{ 'active-group': isGroupActive(businessGroup) }"
+              >
+                {{ $t('menu.business') }}
+              </v-btn>
+            </template>
+            <v-list elevation="3" class="rounded-lg mt-1 menu-dropdown">
+              <v-list-item
+                v-for="item in businessGroup"
+                :key="item.route"
+                :to="item.route"
+                :prepend-icon="item.icon"
+                class="hover-bg"
+                :class="{ 'active-menu-item': isActive(item.route) }"
+                @click="menuStates.business = false"
               >
                 <v-list-item-title class="font-weight-medium">{{ $t(item.text) }}</v-list-item-title>
               </v-list-item>
@@ -114,7 +143,7 @@
           </v-menu>
 
           <!-- Dropdown: Клієнтам -->
-          <v-menu open-on-hover offset-y transition="slide-y-transition">
+          <v-menu v-model="menuStates.clients" open-on-hover offset-y transition="slide-y-transition">
             <template v-slot:activator="{ props }">
               <v-btn 
                 v-bind="props" 
@@ -134,6 +163,7 @@
                 :prepend-icon="item.icon"
                 class="hover-bg"
                 :class="{ 'active-menu-item': isActive(item.route) }"
+                @click="menuStates.clients = false"
               >
                 <v-list-item-title class="font-weight-medium">{{ $t(item.text) }}</v-list-item-title>
               </v-list-item>
@@ -261,13 +291,24 @@ const logoHover = ref(false)
 const phones = ["(067) 131-90-72", "(073) 131-90-72", "(099) 189-37-10"]
 const openPanels = ref([0])
 
+const menuStates = ref({
+  services: false,
+  business: false,
+  clients: false
+})
+
 // Группировка для десктопа
 const servicesGroup = [
   { text: "menu.internet", route: "/price/internet-price", icon: "mdi-microsoft-internet-explorer" },
-  { text: "menu.business", route: "/business", icon: "mdi-briefcase-outline" },
   { text: "menu.tv-list", route: "/price/tv-list", icon: "mdi-youtube-tv" },
   { text: "menu.intercom", route: "/price/intercom-price", icon: "mdi-doorbell-video" },
   { text: "menu.service", route: "/service/test", icon: "mdi-account-wrench-outline" },
+]
+
+const businessGroup = [
+  { text: "menu.business_internet", route: "/business", icon: "mdi-earth" },
+  { text: "menu.developers", route: "/business/developers", icon: "mdi-domain" },
+  { text: "menu.office_networks", route: "/business/office-networks", icon: "mdi-lan" },
 ]
 
 const clientsGroup = [
@@ -286,13 +327,21 @@ const singleItems = [
 // Категории для мобильного меню (как было)
 const categories = {
   rates: {
-    title: "menu.rates",
-    icon: "mdi-tag-multiple-outline",
+    title: "menu.home",
+    icon: "mdi-home-outline",
     children: [
       { text: "menu.internet", route: "/price/internet-price", icon: "mdi-microsoft-internet-explorer" },
-      { text: "menu.business", route: "/business", icon: "mdi-briefcase-outline" },
       { text: "menu.tv-list", route: "/price/tv-list", icon: "mdi-youtube-tv" },
       { text: "menu.intercom", route: "/price/intercom-price", icon: "mdi-doorbell-video" },
+    ],
+  },
+  business: {
+    title: "menu.business",
+    icon: "mdi-briefcase-outline",
+    children: [
+      { text: "menu.business_internet", route: "/business", icon: "mdi-earth" },
+      { text: "menu.developers", route: "/business/developers", icon: "mdi-domain" },
+      { text: "menu.office_networks", route: "/business/office-networks", icon: "mdi-lan" },
     ],
   },
   services: {

@@ -11,7 +11,7 @@
     "service": "Service",
     "coverage-map": "Coverage map",
     "promo": "Promo",
-    "loyalty-program":"Loyalty program",
+    "loyalty-program": "Loyalty program",
     "news": "News",
     "device": "Device",
     "payment": "Payment",
@@ -22,22 +22,28 @@
     "other": "Other",
     "tv-list": "IPTV",
     "sitemap": "Sitemap",
-    "for-subscriber":"For Subscribers",
-    "about":"About Happylink"
+    "for-subscriber": "For Subscribers",
+    "about": "About Happylink",
+    "home": "Home",
+    "business_internet": "Internet for business",
+    "developers": "For developers",
+    "office_networks": "Office networks (SCS)"
   },
-   "loyalty":{"title":"Loyalty program for HappyLink subscribers"},
-"documents": {
-  "view": "View",
-  "download": "Download",
-  "loading": "Loading PDF",
-  "all": "All",
-  "contracts": "Contracts",
-  "reports": "Reports",
-  "noDocuments": "No documents found for the selected category"
-},
+  "loyalty": {
+    "title": "Loyalty program for HappyLink subscribers"
+  },
+  "documents": {
+    "view": "View",
+    "download": "Download",
+    "loading": "Loading PDF",
+    "all": "All",
+    "contracts": "Contracts",
+    "reports": "Reports",
+    "noDocuments": "No documents found for the selected category"
+  },
   "payments": {
-    "qr_title":"Payment by QR code",
-    "app":"Apps"
+    "qr_title": "Payment by QR code",
+    "app": "Apps"
   },
   "request-form": {
     "leave-a-request": "Leave a request",
@@ -52,10 +58,10 @@
     "inactive": "Expired",
     "join-the-promotion": "join the promotion",
     "inactive-promotions": "Inactive promotions",
-    "details":"details",
+    "details": "details",
     "back-to-list": "back-to-list",
     "show-archived": "show-archived",
-    "no-slider-promotions":"no-slider-promotions"
+    "no-slider-promotions": "no-slider-promotions"
   },
   "prices": {
     "connection-type": "Connection type",
@@ -76,7 +82,7 @@
     "service": "Service",
     "price": "Price",
     "subscription": "payment",
-    "intercom-key":"intercom key",
+    "intercom-key": "intercom key",
     "order-key": "order key 120 ₴",
     "number-of-keys": "number of keys",
     "cost-of-key": "The cost of the key (₴)",
@@ -87,8 +93,8 @@
     "connecting-intercom-to-system": "Connections to the system:",
     "connection-cost": "connection cost",
     "installation": "installation",
-    "setup":"setup",
-    "instruction":"instruction"
+    "setup": "setup",
+    "instruction": "instruction"
   },
   "footer": {
     "docs": "Docs",
@@ -98,24 +104,24 @@
     "all-rights-reserved": "All rights reserved",
     "internet-service-provider": "Internet Service Provider"
   },
-  "contact":{
+  "contact": {
     "contact-info": "Contact",
     "location": "Location"
   },
   "preloader": {
     "enter-site": "Enter to site"
   },
-   "equipment":{
-    "order":"To Buy",
+  "equipment": {
+    "order": "To Buy",
     "show": "Show",
     "sort": "Sort By"
   },
-  "errors":{
-"page-not-found": "Page not found",
-"page-not-found-description": "Page does not exist or has been deleted",
-"back-to-home": "Back to home"
-},
-"surveillance": {
+  "errors": {
+    "page-not-found": "Page not found",
+    "page-not-found-description": "Page does not exist or has been deleted",
+    "back-to-home": "Back to home"
+  },
+  "surveillance": {
     "bannerTitle": "Security Under Control!",
     "bannerSubtitle": "We install video surveillance for homes, offices, or businesses. See everything happening — even from afar.",
     "ctaButton": "Book Free Consultation",

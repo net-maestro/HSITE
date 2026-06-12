@@ -9,6 +9,10 @@
           :prepend-icon="ButtonIcon"
           :class="ButtonClass"
           :variant="ButtonVariant"
+          :size="ButtonSize"
+          :rounded="ButtonRounded"
+          :elevation="ButtonElevation"
+          :block="ButtonBlock"
         >
           <span>{{ ButtonTitle }}</span>
         </v-btn>
@@ -109,6 +113,10 @@ export default {
     ButtonIcon: { type: String },
     ButtonClass: { type: String },
     ButtonVariant: { type: String },
+    ButtonSize: { type: String },
+    ButtonRounded: { type: String },
+    ButtonElevation: { type: [String, Number] },
+    ButtonBlock: { type: Boolean, default: false },
     CommentField: { type: Boolean },
     FormData: { type: String }
   },

@@ -27,6 +27,29 @@
       </v-row>
 
       <!-- Тарифи Grid -->
+      <!-- Promo Banner -->
+      <v-row justify="center" class="mb-8">
+        <v-col cols="12" md="10" lg="8">
+          <v-alert
+            color="amber-lighten-4"
+            class="rounded-xl border-accent pa-6 shadow-sm d-flex align-center"
+            elevation="0"
+          >
+            <template v-slot:prepend>
+              <div class="bg-amber rounded-circle pa-3 mr-4 shadow-sm">
+                <v-icon icon="mdi-sale" color="white" size="32"></v-icon>
+              </div>
+            </template>
+            <div class="d-flex flex-column">
+              <h3 class="text-h5 font-weight-bold text-slate-800 mb-1">Акція для нових бізнес-абонентів!</h3>
+              <p class="text-body-1 text-slate-700 mb-0">
+                Підключайте будь-який бізнес-тариф та отримуйте <strong>знижку -50%</strong> на абонплату протягом перших 6 місяців (пропозиція діє тільки для нових абонентів).
+              </p>
+            </div>
+          </v-alert>
+        </v-col>
+      </v-row>
+
       <v-row justify="center">
         <v-col
           v-for="(tariff, index) in businessTariffs"
@@ -42,6 +65,12 @@
             <!-- Promo Badge -->
             <div v-if="tariff.promo" class="promo-badge">
               Акційна ціна
+            </div>
+            
+            <!-- -50% Discount Badge -->
+            <div v-if="tariff.price" class="promo-badge-new d-flex align-center">
+              <v-icon icon="mdi-fire" size="small" class="mr-1"></v-icon>
+              <span>-50% на 6 міс.</span>
             </div>
 
             <!-- Header -->
@@ -66,7 +95,8 @@
               </div>
               <div class="d-flex align-center justify-center speed-badge mx-auto">
                 <v-icon icon="mdi-speedometer" size="small" class="mr-1"></v-icon>
-                <span>до {{ tariff.speed }} Мбіт/с</span>
+                <span v-if="typeof tariff.speed === 'number'">до {{ tariff.speed }} Мбіт/с</span>
+                <span v-else>{{ tariff.speed }}</span>
               </div>
             </div>
 
@@ -78,53 +108,49 @@
               </li>
               <li class="d-flex align-center mb-3" :class="tariff.promo ? 'text-white-80' : 'text-slate-600'">
                 <v-icon icon="mdi-check-circle" size="small" :color="tariff.promo ? '#fed100' : '#10b981'" class="mr-3"></v-icon>
-                <span>Гарантована швидкість</span>
-              </li>
-              <li class="d-flex align-center mb-3" :class="tariff.promo ? 'text-white-80' : 'text-slate-600'">
-                <v-icon icon="mdi-check-circle" size="small" :color="tariff.promo ? '#fed100' : '#10b981'" class="mr-3"></v-icon>
                 <span>Пріоритетна підтримка 24/7</span>
+              </li>
+              <li v-if="tariff.hasRealIp" class="d-flex align-center mb-3" :class="tariff.promo ? 'text-white-80' : 'text-slate-600'">
+                <v-icon icon="mdi-check-circle" size="small" :color="tariff.promo ? '#fed100' : '#10b981'" class="mr-3"></v-icon>
+                <span>Реальна IP-адреса</span>
               </li>
             </ul>
 
             <!-- Order Button -->
-            <v-btn
-              block
-              size="x-large"
-              rounded="pill"
-              elevation="0"
-              :class="tariff.promo ? 'btn-promo' : 'btn-standard'"
-              @click="openOrderForm(tariff)"
-            >
-              Залишити заявку
-            </v-btn>
+            <RequestForm
+              :FormData="`Заявка на тариф для бізнесу: ${tariff.name}`"
+              ButtonTitle="Залишити заявку"
+              ButtonColor=""
+              :ButtonClass="tariff.promo ? 'btn-promo' : 'btn-standard'"
+              ButtonVariant="flat"
+              ButtonSize="x-large"
+              ButtonRounded="pill"
+              ButtonElevation="0"
+              :ButtonBlock="true"
+            />
           </div>
         </v-col>
       </v-row>
+
+      <!-- Тематичний Банер -->
+      <v-row justify="center" class="mt-6 mb-16">
+        <v-col cols="12" md="10">
+          <div class="rounded-xl overflow-hidden shadow-lg">
+            <v-img :src="businessBanner" cover height="400" class="align-end rounded-xl"></v-img>
+          </div>
+        </v-col>
+      </v-row>
+
     </v-container>
 
-    <!-- Dialog for Order Form -->
-    <v-dialog v-model="dialog" max-width="500">
-      <v-card rounded="xl" class="pa-4">
-        <v-card-title class="text-h5 font-weight-bold text-center mb-2">Заявка на підключення</v-card-title>
-        <v-card-text>
-          <p class="text-center text-body-1 mb-6">Обраний тариф: <strong>{{ selectedTariff?.name }}</strong></p>
-          <RequestForm
-            :FormData="`Заявка на тариф для бізнесу: ${selectedTariff?.name}`"
-            ButtonTitle="Підтвердити"
-            ButtonColor="#fed100"
-          />
-        </v-card-text>
-        <v-card-actions class="justify-center">
-          <v-btn variant="text" color="grey-darken-1" @click="dialog = false">Скасувати</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+
 
   </div>
 </template>
 
 <script>
 import RequestForm from '@/components/RequestForm.vue';
+import businessBanner from '@/assets/banners/business.png';
 
 export default {
   name: "BusinessPrice",
@@ -133,8 +159,7 @@ export default {
   },
   data() {
     return {
-      dialog: false,
-      selectedTariff: null,
+      businessBanner,
       features: [
         { title: 'Резервування', desc: 'Автономна робота мережі під час відключень електроенергії (PON).', icon: 'mdi-battery-charging' },
         { title: 'SLA Гарантії', desc: 'Гарантована якість зв\'язку та швидке усунення несправностей.', icon: 'mdi-shield-check-outline' },
@@ -142,19 +167,11 @@ export default {
         { title: 'Реальна IP-адреса', desc: 'Можливість підключення статичної IP-адреси для серверів.', icon: 'mdi-web' },
       ],
       businessTariffs: [
-        { name: "Офіс", price: 498, speed: 50, icon: 'mdi-office-building-outline' },
-        { name: "Офіс (400)", price: 520, speed: 100, icon: 'mdi-domain' },
-        { name: "Офіс (600)", price: 798, speed: 100, icon: 'mdi-city-variant-outline' },
-        { name: "Офіс (720)", price: 720, speed: 100, icon: 'mdi-office-building-marker-outline' },
-        { name: "Офіс (1000)", price: 1500, speed: 1000, icon: 'mdi-rocket-launch-outline' },
-        { name: "Офіс 50 Акція", price: null, speed: 50, icon: 'mdi-star-shooting', promo: true },
+        { name: "Базовий", price: 498, speed: 50, icon: 'mdi-office-building-outline', hasRealIp: false },
+        { name: "Оптимальний", price: 798, speed: 100, icon: 'mdi-city-variant-outline', hasRealIp: true },
+        { name: "Преміальний", price: 1500, speed: 1000, icon: 'mdi-rocket-launch-outline', hasRealIp: true },
+        { name: "Індивідуальний", price: null, speed: "Індивідуальна", icon: 'mdi-handshake-outline', hasRealIp: true },
       ]
-    }
-  },
-  methods: {
-    openOrderForm(tariff) {
-      this.selectedTariff = tariff;
-      this.dialog = true;
     }
   }
 }
@@ -246,6 +263,32 @@ export default {
   border-bottom-left-radius: 20px;
   border-top-right-radius: 28px;
   box-shadow: -2px 2px 10px rgba(254, 209, 0, 0.3);
+}
+
+.promo-badge-new {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: linear-gradient(135deg, #e91e63, #c2185b);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(233, 30, 99, 0.4);
+  z-index: 2;
+  animation: pulse-badge 2s infinite;
+  white-space: nowrap;
+}
+
+@keyframes pulse-badge {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.border-accent {
+  border: 2px solid #fed100 !important;
 }
 
 .icon-circle {

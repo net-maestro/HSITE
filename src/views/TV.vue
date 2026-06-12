@@ -78,7 +78,7 @@
               
               <iframe
                 ref="sweetTVIframe"
-                src="https://sweet.tv/widget/4"
+                src="https://sweet.tv/sports"
                 :class="['tv-iframe', { 'expanded': isExpanded }]"
                 frameborder="0"
                 allowfullscreen
@@ -132,7 +132,7 @@ export default {
           { icon: 'mdi-piggy-bank', color: '#4caf50', bgColor: 'rgba(76, 175, 80, 0.1)', title: 'Разом дешевше', subtitle: 'Інтернет + ТБ від 280 ₴' },
         ],
         instructions: {
-          channelsLink: "https://sweet.tv/widget/4",
+          channelsLink: "https://sweet.tv/site_map",
           connectionGuideLink: "/static/files/tv_instrukcija.pdf",
         },
         channelList: "Список каналів",
@@ -150,7 +150,7 @@ export default {
           { icon: 'mdi-piggy-bank', color: '#4caf50', bgColor: 'rgba(76, 175, 80, 0.1)', title: 'Bundle & Save', subtitle: 'Internet + TV from 280 ₴' },
         ],
         instructions: {
-          channelsLink: "https://sweet.tv/widget/4",
+          channelsLink: "https://sweet.tv/site_map",
           connectionGuideLink: "/static/files/tv_instrukcija.pdf",
         },
         channelList: "Channel List",
